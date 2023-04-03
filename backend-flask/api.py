@@ -1,10 +1,12 @@
 import config
+from camera import VideoCamera
 from flask import Flask
-from flask import request, jsonify
+from flask import request, jsonify, Response
 from contextlib import closing
 import hashlib
 import sqlite3
 from datetime import datetime 
+import cv2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config.secret_key
@@ -89,6 +91,16 @@ def post_data():
                     'code': 200,
                     'data': None,
                     'message': 'successfully posted to database.'})
+
+@app.route('/api/livefeed', methods=['GET'])
+def livefeed():
+    return Response(gen(VideoCamera()), mimetype='multipart/x-mixed-replace;boundary=frame')
+
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
