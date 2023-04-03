@@ -1,0 +1,16 @@
+# vscode
+**/.vscode
+
+# MACOS thing
+**/.DS_Store
+
+# database files
+**/.db
+**/.sqlite
+
+# pycache
+**/__pycache__
+
+**/*.zip
+**/*.tgz
+**/*.tar
