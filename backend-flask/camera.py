@@ -1,3 +1,5 @@
+'''Camera class'''
+
 import cv2
 
 class VideoCamera(object):
@@ -11,3 +13,9 @@ class VideoCamera(object):
         ret, frame = self.video.read()
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
+    
+def gen(camera):
+    # Generates response to send to javascript.
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
