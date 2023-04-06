@@ -5,10 +5,9 @@ function Home() {
   return (
     <div className="Home">
       <Link to="/login">
-        <button>Login</button>
+        <button>Login Here</button>
       </Link>
       <br />
-      <img src={require("../assets/liberty-logo.jpg")} />
     </div>
   );
 }

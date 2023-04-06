@@ -1,5 +1,7 @@
 import React from "react";
 
+import Footer from "./Footer";
+
 function LiveSort() {
   const request = "http://localhost:5000";
 
@@ -9,6 +11,7 @@ function LiveSort() {
         src={request + "/api/livefeed"}
         alt="Video"
       />
+      <Footer />
     </div>
   );
 }
