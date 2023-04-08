@@ -19,6 +19,12 @@
 --     SorterId INTEGER REFERENCES Users(Id) 
 -- );
 
+DROP TABLE IF EXISTS images;
+DROP TABLE IF EXISTS Overrides;
+DROP TABLE IF EXISTS Employees;
+DROP TABLE IF EXISTS Trainer;
+DROP TABLE IF EXISTS Conditions;
+
 CREATE TABLE images (
     imageID       INTEGER  PRIMARY KEY AUTOINCREMENT,
     ImageBlob     BLOB     NOT NULL,
@@ -100,3 +106,26 @@ BEGIN
     UPDATE images
        SET overrideNum = 1;
 END;
+
+-- Populate some Employees, Trainer, Images, and Conditions tables --
+INSERT INTO Conditions (description) VALUES ('Warped');
+INSERT INTO Conditions (description) VALUES ('Chipped Corners');
+INSERT INTO Conditions (description) VALUES ('Cracks');
+INSERT INTO Conditions (description) VALUES ('Bent Metal');
+INSERT INTO Conditions (description)VALUES ('Missing Boards');
+INSERT INTO Conditions (description) VALUES ('Mold');
+INSERT INTO Conditions (description) VALUES ('Cracks');
+
+INSERT INTO Trainer (AuthorizationNum) VALUES (101);
+INSERT INTO Trainer (AuthorizationNum) VALUES (102);
+
+INSERT INTO Employees (AuthorizationNum) VALUES (200);
+INSERT INTO Employees (AuthorizationNum) VALUES (201);
+INSERT INTO Employees (AuthorizationNum) VALUES (202);
+INSERT INTO Employees (AuthorizationNum) VALUES (203);
+INSERT INTO Employees (AuthorizationNum) VALUES (204);
+INSERT INTO Employees (AuthorizationNum) VALUES (205);
+INSERT INTO Employees (AuthorizationNum) VALUES (206);
+INSERT INTO Employees (AuthorizationNum) VALUES (207);
+INSERT INTO Employees (AuthorizationNum) VALUES (208);
+INSERT INTO Employees (AuthorizationNum) VALUES (209);
