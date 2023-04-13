@@ -19,7 +19,7 @@ CREATE TABLE User (
 
 CREATE TABLE Images (
     image_id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    data            DATETIME NOT NULL
+    date            DATETIME NOT NULL
                            DEFAULT (datetime('now', 'localtime') ),
     image_blob       BLOB NOT NULL,
     defects         INTEGER NOT NULL,
@@ -33,8 +33,7 @@ CREATE TABLE Overrides (
     override_id      INTEGER  PRIMARY KEY AUTOINCREMENT
                               NOT NULL,
     imageID          INTEGER  REFERENCES images (image_id),
-    TrainerID        INTEGER  REFERENCES Trainer (user_id) 
-                              NOT NULL,
+    TrainerID        INTEGER  NOT NULL,
     dateOverrided    DATETIME NOT NULL
                               DEFAULT (datetime('now', 'localtime') ),
     updatedCondition INTEGER  NOT NULL,
@@ -64,7 +63,7 @@ BEGIN
                               oldCondition
                           )
                           VALUES (
-                              old.imageID,
+                              old.image_id,
                               (
                                   SELECT user_id
                                     FROM User

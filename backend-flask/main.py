@@ -64,13 +64,13 @@ def main():
     database = r'database.db'
     conn = openConnection(database)
     for images in os.listdir(path):
-        if(images.endswith(".jpg")):
+        if(images.endswith(".PNG")):
             print(path+images)
             newBlob = convertToBinary(path+images)
             insertToTable(conn, newBlob)
             print("image uploaded")
-    imgid = 6
-    convertBack(conn, 6)
+    # imgid = 6
+    # convertBack(conn, 6)
 
     closeConnection(conn, database)
 
