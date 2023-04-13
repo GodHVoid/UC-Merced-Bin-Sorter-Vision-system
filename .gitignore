@@ -5,8 +5,8 @@
 **/.DS_Store
 
 # database files
-**/.db
-**/.sqlite
+**/*.db
+**/*.sqlite
 
 # pycache
 **/__pycache__
