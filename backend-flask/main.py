@@ -11,8 +11,8 @@ from datetime import date
 #from datetime import datetime 
 import os
 from os import listdir
+
 #path to images for testing
-#path = 'C:\Users\15598\OneDrive\Documents\UCM\Spring23\CSE120\Team_Project\UC-Merced-Bin-Sorter-Vision-system\backend-flask\images'
 path = 'images/'
 
 app = Flask(__name__)
@@ -36,41 +36,40 @@ def closeConnection(_conn, _dbFile):
         print(e)
 
 
-def convertToBinary(filename):
-    with open(filename, 'rb') as file:
-        binarydata = file.read()
-        binarydata = binarydata.decode('utf-16','ignore')
-    return binarydata
-
-def convertBinaryToFile(binarydata, filename):
-    with open(filename, 'wb') as file:
-        file.write(binarydata)
-
-def insertToTable(conn, imgFile):
+def insertBinaryToTable(conn,filename):
     cur = conn.cursor()
+    with open(filename, 'rb') as file:
+        blob = file.read()
+        #print(blob)
     sql = """INSERT INTO Images (image_blob,defects,sys_verdict,emp_verdict,emp_id)
-    VALUES  (?,?,?,?,?);
-    """
-    args = [imgFile,1,'Good','Bad',1]
+            VALUES (?,?,?,?,?);"""
+    args = [blob, 3,'Good','Bad',3]
     cur.execute(sql,args)
     conn.commit()
-    print("success inserting image")
 
-def convertBack(conn,idNum):
-    return 'work in progress'
+def outputImage(conn, imgID):
+    cur = conn.cursor()
+    sql = """SELECT * FROM Images WHERE image_id = ?"""
+    cur.execute(sql,(imgID,))
+    res = cur.fetchone()[2] # stores the third element returned(BLOB number)
+    #print(res)
+    path = 'images/test{0}.png'.format(imgID)
+    with open(path, 'wb') as file:
+        file.write(res)
+        file.close()
 
 
 def main():
     database = r'database.db'
     conn = openConnection(database)
+
+    #---- Trying New Method to store/retrieve images ------------
     for images in os.listdir(path):
-        if(images.endswith(".PNG")):
-            print(path+images)
-            newBlob = convertToBinary(path+images)
-            insertToTable(conn, newBlob)
-            print("image uploaded")
-    # imgid = 6
-    # convertBack(conn, 6)
+        if (images.endswith(".PNG")):
+            insertBinaryToTable(conn,path+images)
+            print('image added')
+    
+    outputImage(conn,5)
 
     closeConnection(conn, database)
 
