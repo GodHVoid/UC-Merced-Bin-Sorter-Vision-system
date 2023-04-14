@@ -24,7 +24,9 @@ function Login() {
       if (data !== null && data["token"]) {
         window.location.href = "/livesort";
       } else {
-        alert(response["message"])
+        alert(response["message"]);
+        setUsername("");
+        setPassword("");
       }
     })
   };
