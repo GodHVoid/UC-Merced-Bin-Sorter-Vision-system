@@ -10,9 +10,11 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config.secret_key
-cors = CORS(app)
+CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/api/login', methods=['POST'])
+@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def login():
     auth = request.get_json()
 
@@ -20,9 +22,9 @@ def login():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             user_data = cursor.execute(
-                'SELECT user_id, user_password, is_trainer FROM Users WHERE user_id=?', 
-                (auth['user-id'])
-            )
+                'SELECT user_id, password, authorization AS is_trainer FROM User WHERE user_id=?', 
+                (auth['user-id'],)
+            ).fetchall()
 
     # If query returns empty list or password is incorrect, return fail.
     if not user_data or not check_password(auth['user-password'], user_data[0][1]):
@@ -101,10 +103,9 @@ def get_system_data():
 
 @app.route('/api/livefeed', methods=['GET'])
 @cross_origin()
-@token_required
 def livefeed():
     return Response(gen(VideoCamera()), mimetype='multipart/x-mixed-replace;boundary=frame')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=8080)

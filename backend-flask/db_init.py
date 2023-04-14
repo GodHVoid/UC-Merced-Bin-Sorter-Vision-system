@@ -16,7 +16,7 @@ db = r"database.db" # Will connect to database or create one if not already crea
 conn = None
 
 try:
-    with open('schema2.sql', 'r') as sql_schema:
+    with open('schema.sql', 'r') as sql_schema:
         sql_commands = sql_schema.read()
     conn = sqlite3.connect(db)
     print("Connected to database.")

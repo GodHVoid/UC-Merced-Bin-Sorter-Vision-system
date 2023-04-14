@@ -1,66 +1,44 @@
--- DROP TABLE IF EXISTS Users BinSortData
--- DROP TABLE IF EXISTS Users; 
--- DROP TABLE IF EXISTS BinSortData;
-
--- CREATE TABLE Users (
---     Id INTEGER PRIMARY KEY,
---     FirstName VARCHAR(64) NOT NULL, 
---     LastName VARCHAR(64) NOT NULL,
---     UserPassword VARCHAR(255) NOT NULL,
---     IsTrainer BOOLEAN NOT NULL
--- );
-
--- CREATE TABLE BinSortData (
---     Date TIMESTAMP NOT NULL,
---     PartImage VARCHAR(255) NOT NULL, 
---     Damages VARCHAR(255) NOT NULL,
---     SystemDecision BOOLEAN NOT NULL,
---     SorterDecision BOOLEAN NOT NULL,
---     SorterId INTEGER REFERENCES Users(Id) 
--- );
-
-DROP TABLE IF EXISTS images;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Images;
 DROP TABLE IF EXISTS Overrides;
-DROP TABLE IF EXISTS Employees;
-DROP TABLE IF EXISTS Trainer;
 DROP TABLE IF EXISTS Conditions;
 
-CREATE TABLE images (
-    imageID       INTEGER  PRIMARY KEY AUTOINCREMENT,
-    ImageBlob     BLOB     NOT NULL,
-    dateProcessed DATETIME NOT NULL
+-- DROP TABLE User;
+-- DROP TABLE Images;
+-- DROP TABLE Overrides;
+-- DROP TABLE Conditions;
+
+-- Creating tables
+CREATE TABLE User (
+    user_id         INTEGER PRIMARY KEY AUTOINCREMENT
+                                        NOT NULL,
+    username        STRING UNIQUE NOT NULL,
+    password        STRING NOT NULL,
+    authorization INTEGER NOT NULL
+);
+
+CREATE TABLE Images (
+    image_id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    data            DATETIME NOT NULL
                            DEFAULT (datetime('now', 'localtime') ),
-    Condition     INTEGER  NOT NULL,
-    EmpID         INTEGER  REFERENCES Employees (EmpID) 
-                           NOT NULL,
-    overrideNum   INTEGER
+    image_blob       BLOB NOT NULL,
+    defects         INTEGER NOT NULL,
+    sys_verdict     STRING NOT NULL,
+    emp_verdict     STRING NOT NULL,
+    emp_id          INTEGER NOT NULL,
+    override        INTEGER
 );
 
 CREATE TABLE Overrides (
-    overrideNum      INTEGER  PRIMARY KEY AUTOINCREMENT
+    override_id      INTEGER  PRIMARY KEY AUTOINCREMENT
                               NOT NULL,
-    imageID          INTEGER  REFERENCES images (imageID),
-    TrainerID        INTEGER  REFERENCES Trainer (TrainerID) 
+    imageID          INTEGER  REFERENCES images (image_id),
+    TrainerID        INTEGER  REFERENCES Trainer (user_id) 
                               NOT NULL,
     dateOverrided    DATETIME NOT NULL
                               DEFAULT (datetime('now', 'localtime') ),
     updatedCondition INTEGER  NOT NULL,
     oldCondition     INTEGER
-);
-
-CREATE TABLE Trainer (
-    TrainerID        INTEGER PRIMARY KEY AUTOINCREMENT
-                             NOT NULL,
-    AuthorizationNum INTEGER UNIQUE
-                             NOT NULL
-);
-
-CREATE TABLE Employees (
-    EmpID            INTEGER PRIMARY KEY AUTOINCREMENT
-                             NOT NULL,
-    AuthorizationNum INTEGER UNIQUE
-                             NOT NULL,
-    overridePerc     DOUBLE
 );
 
 CREATE TABLE Conditions (
@@ -69,14 +47,14 @@ CREATE TABLE Conditions (
                         PRIMARY KEY AUTOINCREMENT,
     Description STRING  NOT NULL
 );
------------------------------------------------------------------------
+--------------------------------------------------------
 -- Triggers that will fill the Overrides table when an images condtion is changed
 -- in images table
 
 -- Attributes for Override Table
 CREATE TRIGGER img_condition_override
-         AFTER UPDATE OF Condition
-            ON images
+         AFTER UPDATE OF defects
+            ON Images
       FOR EACH ROW
 BEGIN
     INSERT INTO Overrides (
@@ -88,26 +66,27 @@ BEGIN
                           VALUES (
                               old.imageID,
                               (
-                                  SELECT TrainerID
-                                    FROM Trainer
-                                   WHERE TrainerID == 1
+                                  SELECT user_id
+                                    FROM User
+                                   WHERE user_id == 6
                               ),
-                              new.Condition,
-                              old.Condition
+                              new.defects,
+                              old.defects
                           );
 END;
 
 -- Updated value in images.overrideNum from NULL to 1; Could be changed to a different value later
 CREATE TRIGGER update_override_status
-         AFTER UPDATE OF Condition
-            ON images
+         AFTER UPDATE OF defects
+            ON Images
       FOR EACH ROW
 BEGIN
-    UPDATE images
-       SET overrideNum = 1;
+    UPDATE Images
+       SET override = 1;
 END;
 
--- Populate some Employees, Trainer, Images, and Conditions tables --
+-----------------------------------------------------
+-- Populate some tables for texting
 INSERT INTO Conditions (description) VALUES ('Warped');
 INSERT INTO Conditions (description) VALUES ('Chipped Corners');
 INSERT INTO Conditions (description) VALUES ('Cracks');
@@ -116,16 +95,6 @@ INSERT INTO Conditions (description)VALUES ('Missing Boards');
 INSERT INTO Conditions (description) VALUES ('Mold');
 INSERT INTO Conditions (description) VALUES ('Cracks');
 
-INSERT INTO Trainer (AuthorizationNum) VALUES (101);
-INSERT INTO Trainer (AuthorizationNum) VALUES (102);
-
-INSERT INTO Employees (AuthorizationNum) VALUES (200);
-INSERT INTO Employees (AuthorizationNum) VALUES (201);
-INSERT INTO Employees (AuthorizationNum) VALUES (202);
-INSERT INTO Employees (AuthorizationNum) VALUES (203);
-INSERT INTO Employees (AuthorizationNum) VALUES (204);
-INSERT INTO Employees (AuthorizationNum) VALUES (205);
-INSERT INTO Employees (AuthorizationNum) VALUES (206);
-INSERT INTO Employees (AuthorizationNum) VALUES (207);
-INSERT INTO Employees (AuthorizationNum) VALUES (208);
-INSERT INTO Employees (AuthorizationNum) VALUES (209);
+INSERT INTO User (username, password, authorization) VALUES ('John', '123john', 0);
+INSERT INTO User (username, password, authorization) VALUES ('Jim', '123jim', 0);
+INSERT INTO User (username, password, authorization) VALUES ('David', '123david', 0);
