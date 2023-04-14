@@ -1,73 +1,74 @@
-import React from "react";
-
-const url = "http://localhost:3000";
-
-// import React, {useState} from "react";
-// import axios from 'axios';
-// import { useHistory } from 'react-router-dom';
-
-// function Login(){
-//     const [email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-//     const history = useHistory();
-
-//     const handleSubmit = async (event) => {
-//         event.preventDefault();
-//         const data = {
-//             email,
-//             password
-//         }
-//         try{
-//             const response = await axios.post('/app/login', data);
-//             if (response.data === 'success'){
-//                 history.push('/livefeed');
-//             }
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     };
-
-//     return(
-//         <form onSubmit={handleSubmit} className = "loginForm">
-//             <label>
-//                 Email:
-//                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-//             </label>
-//             <label>
-//                 Password:
-//                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-//             </label>
-//             <button type="submit">Login</button>
-//         </form>
-//     );
-// }
-// export default Login;
-
-
-function checkLogin() {
-  fetch(url + "/api/login", {
-    method: "GET", 
-    headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json"
-    }
-  }).then(res => res.json())
-    .then(data => console.log(data))
-}
+import React, { useState } from "react";
 
 function Login() {
+  const request = "http://localhost:8080";
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    fetch(request + "/api/login", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }, 
+      body: JSON.stringify({"user-id": username, "user-password": password})
+    })
+    .then(res => res.json())
+    .then( response => {
+      var data = response["data"];
+      if (data !== null && data["token"]) {
+        window.location.href = "/livesort";
+      } else {
+        alert(response["message"])
+      }
+    })
+  };
+
   return (
-    <div className="Login">
-      <form onSubmit={ checkLogin() } className="LoginForm">
-        <label htmlFor="sorter-id">ID</label>
-        <input type="text" />
+    <form onSubmit={handleLogin} className="loginForm">
+      <div className="form-group row">
+        <label htmlFor="username" className="col-sm-2 col-form-label">
+          Username:
+        </label>
         <br />
-        <label htmlFor="sorter-password">Password</label>
-        <input type="password" />
+        <div className="col-sm-10">
+          <input
+            type="text"
+            name="username"
+            aria-label="Username"
+            className="form-control"
+            id="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+        </div>
+      </div>
+      <br />
+      <div className="form-group row">
+        <label htmlFor="password" className="col-sm-2 col-form-label">
+          Password:
+        </label>
         <br />
-        <button type="submit">Log In</button>
-      </form>
-    </div>
+        <div className="col-sm-10">
+          <input
+            type="password"
+            name="password"
+            aria-label="Password"
+            className="form-control"
+            id="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
+      </div>
+      <br />
+      <button className="btn btn-dark" type="submit">Login</button>
+    </form>
   );
 }
 
