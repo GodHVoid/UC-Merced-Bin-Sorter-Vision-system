@@ -96,5 +96,5 @@ INSERT INTO Conditions (description) VALUES ('Mold');
 INSERT INTO Conditions (description) VALUES ('Cracks');
 
 INSERT INTO User (username, password, authorization) VALUES ('John', '123john', 0);
-INSERT INTO User (username, password, authorization) VALUES ('Jim', '123jim', 0);
+INSERT INTO User (username, password, authorization) VALUES ('Jim', '123jim', 1);
 INSERT INTO User (username, password, authorization) VALUES ('David', '123david', 0);

@@ -22,8 +22,8 @@ def login():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             user_data = cursor.execute(
-                'SELECT user_id, password, authorization AS is_trainer FROM User WHERE user_id=?', 
-                (auth['user-id'],)
+                'SELECT username, password, authorization AS is_trainer FROM User WHERE username=?', 
+                (auth['user-id'].title(),)
             ).fetchall()
 
     # If query returns empty list or password is incorrect, return fail.
