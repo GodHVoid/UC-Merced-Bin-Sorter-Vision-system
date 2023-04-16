@@ -1,4 +1,5 @@
 import React from "react";
+import SortFeed from "./SortFeed";
 
 function LiveSort() {
   const request = "http://localhost:8080";
@@ -16,10 +17,7 @@ function LiveSort() {
         <p>hello</p>
       </div>
 
-      <div className="sort-btns">
-        <button>Agree</button>
-        <button>Disagree</button>
-      </div>
+      <SortFeed />
     </div>
   );
 }
