@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 //acutal code
 function Database() {
+  const req = "http://localhost:8080";
+
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const request = "http://localhost:8080";
-
   useEffect(() => {
-    fetch(request+"/api/data", {
-      method: "GET"
+    fetch(req+"/api/data", {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token")
+      }
     })
-    .then(res => res.json())
-    .then(response => console.log(response))
   }, []);
 
   const filteredData = data.filter((row) =>

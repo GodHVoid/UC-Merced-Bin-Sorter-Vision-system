@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import SortFeed from "./SortFeed";
 
 function LiveSort() {
-  const request = "http://localhost:8080";
+
+  const [frame, setFrame] = useState("");
+
+    fetch("/api/livefeed", {
+      method: "GET", 
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token")
+      }
+    })
+    .then(res=> res.json())
+    .then(response => {
+      setFrame(response);
+    })
 
   return (
     <div className="LiveSort">
       <div className="livefeed">
         <img 
-          src={request + "/api/livefeed"}
+          src={frame}
           alt="Video"
         />
       </div>
