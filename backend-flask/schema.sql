@@ -148,122 +148,39 @@ INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Rui
 INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Justus', 'Sasses', 'jsasse', '234Justus', 1)
 
 -- Test Queries to receive specific data ------------------
--- Return employee info except for password
+-- 1) Return employee info except for password
 SELECT user_id, firstname, lastname, username FROM Users WHERE is_trainer != 1;
     -- returns infor based on userlogin
     SELECT user_id, firstname, lastname
     FROM Users
-    WHERE username = lortiz --can be changed to user input
+    WHERE username = 'lortiz' --can be changed to user input
 
--- Returns images processed by an employee
-SELECT *, Some.Corner_damage
-FROM Images, 
- ( SELECT Corner_damage, Edge_damage, Logo_repair, Cleat_damage, Clear_repair
-   FROM Part_Conditions
-   Where Images.emp_id = Part_Conditions.p_image_id;
- ) as Some
- WHERE emp_id = 4 -- can be changed to look up by name; or user input
-    AND image_id = Some.p_image_id;
-
--- Returns sys vs emp decision on image
-SELECT P.firstname, * 
+-- 2) Returns sys vs emp decision on image
+SELECT * 
 FROM Images, (SELECT firstname, user_id FROM Users) as P
 WHERE emp_id = 3 -- can be changed to look up by name; or user input
     AND P.user_id = emp_id;
 
+-- 3) Returns all the parts by employee
+SELECT*
+FROM Images
+WHERE emp_id = 5; --value can change
 
--- -- DROP TABLE User;
--- -- DROP TABLE Images;
--- -- DROP TABLE Overrides;
--- -- DROP TABLE Conditions;
+-- 4) Return all images by specific part type
+SELECT *
+FROM Images
+WHERE part_type = 'Base-pallet';
 
--- -- Creating tables
--- CREATE TABLE User (
---     user_id         INTEGER PRIMARY KEY AUTOINCREMENT
---                                         NOT NULL,
---     username        STRING UNIQUE NOT NULL,
---     password        STRING NOT NULL,
---     authorization INTEGER NOT NULL
--- );
+-- 5) for Database Page (trainer)
+SELECT emp_id, Images.date as Date, image_blob, sys_verdict, emp_verdict, Corner_damage, Edge_damage, Logo_repair, Cleat_damage, Clear_repair
+FROM Images, Part_Conditions
+WHERE image_id = p_image_id
 
--- CREATE TABLE Images (
---     image_id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
---     data            DATETIME NOT NULL
---                            DEFAULT (datetime('now', 'localtime') ),
---     image_blob       BLOB NOT NULL,
---     defects         INTEGER NOT NULL,
---     sys_verdict     STRING NOT NULL,
---     emp_verdict     STRING NOT NULL,
---     emp_id          INTEGER NOT NULL,
---     override        INTEGER
--- );
+-------------------- Working with Overrides Table --------------
+-- 6) Returns everything from table
+SELECT * FROM Overrides;
 
--- CREATE TABLE Overrides (
---     override_id      INTEGER  PRIMARY KEY AUTOINCREMENT
---                               NOT NULL,
---     imageID          INTEGER  REFERENCES images (image_id),
---     TrainerID        INTEGER  REFERENCES Trainer (user_id) 
---                               NOT NULL,
---     dateOverrided    DATETIME NOT NULL
---                               DEFAULT (datetime('now', 'localtime') ),
---     updatedCondition INTEGER  NOT NULL,
---     oldCondition     INTEGER
--- );
+-- 7) Return the last x-number of inputs to Override Tables
+SELECT * FROM Overrides ORDER BY override_id DESC LIMIT 2;
 
--- CREATE TABLE Conditions (
---     value       INTEGER UNIQUE
---                         NOT NULL
---                         PRIMARY KEY AUTOINCREMENT,
---     Description STRING  NOT NULL
--- );
--- --------------------------------------------------------
--- -- Triggers that will fill the Overrides table when an images condtion is changed
--- -- in images table
-
--- -- Attributes for Override Table
--- CREATE TRIGGER img_condition_override
---          AFTER UPDATE OF defects
---             ON Images
---       FOR EACH ROW
--- BEGIN
---     INSERT INTO Overrides (
---                               imageID,
---                               TrainerID,
---                               updatedCondition,
---                               oldCondition
---                           )
---                           VALUES (
---                               old.imageID,
---                               (
---                                   SELECT user_id
---                                     FROM User
---                                    WHERE user_id == 6
---                               ),
---                               new.defects,
---                               old.defects
---                           );
--- END;
-
--- -- Updated value in images.overrideNum from NULL to 1; Could be changed to a different value later
--- CREATE TRIGGER update_override_status
---          AFTER UPDATE OF defects
---             ON Images
---       FOR EACH ROW
--- BEGIN
---     UPDATE Images
---        SET override = 1;
--- END;
-
--- -----------------------------------------------------
--- -- Populate some tables for texting
--- INSERT INTO Conditions (description) VALUES ('Warped');
--- INSERT INTO Conditions (description) VALUES ('Chipped Corners');
--- INSERT INTO Conditions (description) VALUES ('Cracks');
--- INSERT INTO Conditions (description) VALUES ('Bent Metal');
--- INSERT INTO Conditions (description)VALUES ('Missing Boards');
--- INSERT INTO Conditions (description) VALUES ('Mold');
--- INSERT INTO Conditions (description) VALUES ('Cracks');
-
--- INSERT INTO User (username, password, authorization) VALUES ('John', '123john', 0);
--- INSERT INTO User (username, password, authorization) VALUES ('Jim', '123jim', 1);
--- INSERT INTO User (username, password, authorization) VALUES ('David', '123david', 0);
+SELECT* FROM Overrides WHERE trainer_id = 5;
