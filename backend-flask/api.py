@@ -43,7 +43,9 @@ def login():
                     'message': 'successful login.'})
 
 @app.route('/api/logout', methods=['GET'])
+@token_required
 def logout():
+    config.token_blacklist.append(request.headers['x-access-token'])
     return jsonify({'status': 'success',
                     'code': 302,
                     'data': None, 
@@ -55,8 +57,8 @@ def get_data():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             data = cursor.execute(
-                'SELECT TOP 100 * FROM Images'
-            )
+                'SELECT * FROM Images'
+            ).fetchall()
     
     return jsonify({'status': 'success',
                     'code': 200,
@@ -103,6 +105,7 @@ def get_system_data():
 
 @app.route('/api/livefeed', methods=['GET'])
 @cross_origin()
+@token_required
 def livefeed():
     return Response(gen(VideoCamera()), mimetype='multipart/x-mixed-replace;boundary=frame')
 

@@ -13,22 +13,34 @@ def token_required(f):
         token = None
 
         if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
+            if request.headers['x-access-token'] not in config.token_blacklist:
+                token = request.headers['x-access-token']
+            else:
+                return jsonify({'status': 'failed',
+                                'code': 401, 
+                                'data': None, 
+                                'message': 'invalid token.'})
         if not token:
-            return jsonify({})
+            return jsonify({'status': 'failed',
+                            'code': 401, 
+                            'data': None, 
+                            'message': 'no token.'})
         
         try:
             data = jwt.decode(token, config.secret_key, algorithms='HS256')
             with closing(sqlite3.connect(config.database)) as conn:
                 with closing(conn.cursor()) as cursor:
                     current_user = cursor.execute(
-                        'SELECT user_id FROM User WHERE user_id=?',
-                        (data['user-id'])
+                        'SELECT username FROM User WHERE username=?',
+                        (data['user-id'],)
                     )
-        except:
-            return jsonify({})
-        
-        return f(current_user, *args, **kwargs)
+        except Exception as e:
+            return jsonify({'status': 'failed',
+                            'code': 401, 
+                            'data': None, 
+                            'message': 'invalid token.'})
+
+        return f(*args, **kwargs)
     return decorated
 
 def gen_token(payload, key):
