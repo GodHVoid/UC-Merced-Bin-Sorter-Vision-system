@@ -169,7 +169,7 @@ WHERE emp_id = 5; --value can change
 -- 4) Return all images by specific part type
 SELECT *
 FROM Images
-WHERE part_type = 'Base-pallet';
+WHERE part_type = 'Base-pallet'; -- can change the string type
 
 -- 5) for Database Page (trainer)
 SELECT emp_id, Images.date as Date, image_blob, sys_verdict, emp_verdict, Corner_damage, Edge_damage, Logo_repair, Cleat_damage, Clear_repair
@@ -182,5 +182,5 @@ SELECT * FROM Overrides;
 
 -- 7) Return the last x-number of inputs to Override Tables
 SELECT * FROM Overrides ORDER BY override_id DESC LIMIT 2;
-
+-- Returns overrides made by a specific trainer
 SELECT* FROM Overrides WHERE trainer_id = 5;
