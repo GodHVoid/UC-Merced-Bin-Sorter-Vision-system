@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import decode from "../routes/Auth";
 
 function Login() {
   const request = "http://localhost:8080";
@@ -21,8 +22,14 @@ function Login() {
     .then(res => res.json())
     .then( response => {
       var data = response["data"];
-      if (data !== null && data["token"]) {
-        window.location.href = "/livesort";
+
+      var decoded = decode(data["token"]);
+      var is_trainer = decoded["is-trainer"];
+      var user = decoded["user-id"];
+
+      if (data !== null) {
+        localStorage.setItem("token", data["token"]);
+        is_trainer ? window.location.href = "./trainer-dashboard" : window.location.href = "./livesort";
       } else {
         alert(response["message"]);
         setUsername("");
