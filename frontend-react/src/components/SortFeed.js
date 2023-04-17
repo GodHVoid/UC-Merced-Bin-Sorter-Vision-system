@@ -8,7 +8,7 @@ function SortFeed() {
   const [systemErrors, setSystemErrors] = useState([]);
   const [verdictSubmitted, setVerdictSubmitted] = useState(false);
 
-  //get part sorted information
+  //get part sorted information from Renato to dislpay
   useEffect(() => {
     fetch("/api")
       .then((response) => response.json())

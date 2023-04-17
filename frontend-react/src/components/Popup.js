@@ -3,9 +3,14 @@ import React from "react";
 function Popup(props) {
   return props.trigger ? (
     <div className="Popup">
-      <div className="Popup=inner">
-        <button>Close</button>
+      <div className="Popup-inner">
+        
+        <button className="close-btn" onClick={() => props.setTrigger(false)}>
+          Close
+        </button>
+        
         {props.children}
+      
       </div>
     </div>
   ) : null;

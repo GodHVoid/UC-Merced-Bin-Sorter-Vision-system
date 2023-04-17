@@ -97,6 +97,24 @@ def get_sorter_data(id):
                     'data': data,
                     'message': f'successfully retrieved last 100 entries for {id}'})
 
+@app.route('/api/detection', methods=['GET'])
+def get_detection_data():
+
+    test_data = {"part-name": "tops", 
+                 "img": None, 
+                 "id": 208, 
+                 "decision": "destroy", 
+                 "errors": {"Corner_damage": 2,
+                            "Edge_damage": 0, 
+                            "Logo_repair": 1,
+                            "Cleat_damage": 2,
+                            "Cleat_repair": 0}}
+
+    return jsonify({'status': 'success',
+                    'code': 200,
+                    'data': test_data,
+                    'message': f'successfully retrieved last 100 entries for {id}'})
+
 @app.route('/api/data/system', methods=['GET'])
 @token_required
 def get_system_data():

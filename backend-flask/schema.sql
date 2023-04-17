@@ -141,47 +141,8 @@ END;
 
 ------------------------------------------------------------
 
-INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Lucas','Ortiz','lortiz', '123Ortiz', 0);
-INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Tony', 'Doan', 'tdoan', '123Doan', 0);
-INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Renato', 'Millan', 'rmillan', '123Renato', 0);
-INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Rui', 'Pan', 'rpan', '123Rui', 0);
-INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Justus', 'Sasses', 'jsasse', '234Justus', 1)
-
--- Test Queries to receive specific data ------------------
--- 1) Return employee info except for password
-SELECT user_id, firstname, lastname, username FROM Users WHERE is_trainer != 1;
-
--- returns infor based on userlogin
-SELECT user_id, firstname, lastname
-FROM Users
-WHERE username = 'lortiz' --can be changed to user input
-
--- 2) Returns sys vs emp decision on image
-SELECT P.firstname, image_id, part_type, date, emp_id, sys_verdict, emp_verdict, override 
-FROM Images, (SELECT firstname, user_id FROM Users) as P
-WHERE emp_id = 3 -- can be changed to look up by name; or user input
-    AND P.user_id = emp_id;
-
--- 3) Returns all the parts by employee
-SELECT *
-FROM Images
-WHERE emp_id = 5; --value can change
-
--- 4) Return all images by specific part type
-SELECT *
-FROM Images
-WHERE part_type = 'Base-pallet'; -- can change the string type
-
--- 5) for Database Page (trainer)
-SELECT emp_id, Images.date as Date, 'image here', sys_verdict, emp_verdict, Corner_damage, Edge_damage, Logo_repair, Cleat_damage, Clear_repair
-FROM Images, Part_Conditions
-WHERE image_id = p_image_id
-
--------------------- Working with Overrides Table --------------
--- 6) Returns everything from table
-SELECT * FROM Overrides;
-
--- 7) Return the last x-number of inputs to Override Tables
-SELECT * FROM Overrides ORDER BY override_id DESC LIMIT 2;
--- Returns overrides made by a specific trainer
-SELECT * FROM Overrides WHERE trainer_id = 5;
+-- INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Lucas','Ortiz','lortiz', '123Ortiz', 0);
+-- INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Tony', 'Doan', 'tdoan', '123Doan', 0);
+-- INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Renato', 'Millan', 'rmillan', '123Renato', 0);
+-- INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Rui', 'Pan', 'rpan', '123Rui', 0);
+-- INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Justus', 'Sasses', 'jsasse', '234Justus', 1)
