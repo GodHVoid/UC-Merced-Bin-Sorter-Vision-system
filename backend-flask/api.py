@@ -100,7 +100,7 @@ def get_sorter_data(id):
 @app.route('/api/detection', methods=['GET'])
 def get_detection_data():
 
-    test_data = {"part-name": "tops", 
+    test_data = {"part": "tops", 
                  "img": None, 
                  "id": 208, 
                  "decision": "destroy", 

@@ -18,11 +18,11 @@ function SortFeed() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setPartImg(data["img"]);
-        setPartName(data["part-name"]);
-        setSystemVerdict(data["decision"]);
-        setPartID(data["id"]);
-        setSystemErrors(data["errors"]);
+        setPartImg(data.data.img);
+        setPartName(data.data.part);
+        setSystemVerdict(data.data.decision);
+        setPartID(data.data.id);
+        setSystemErrors(data.data.errors);
       })
       .catch((error) => {
         console.error("Error fetching data from server:", error);
@@ -60,18 +60,22 @@ function SortFeed() {
         <h2>{partName}</h2>
         <h2>{systemVerdict}</h2>
         <h2>{partID}</h2>
-        <ul>
-          {systemErrors.map((error) => (
-            <li>{error}</li>
-          ))}
-        </ul>
+      {systemErrors && (
+      <ul>
+      {Object.entries(systemErrors).map(([key, value]) => (
+        <li key={key}>
+          {key}: {value}
+        </li>
+      ))}
+      </ul>
+      )}
       </div>
       <div className="feedbackButton">
-        <button class="btn btn-dark" onClick={() => handleUserverdict("agree")}>
+        <button className="btn btn-dark" onClick={() => handleUserverdict("agree")}>
           Agree
         </button>
         <button
-          class="btn btn-dark"
+          className="btn btn-dark"
           onClick={() => handleUserverdict("disagree")}
         >
           Disagree
