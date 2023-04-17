@@ -21,6 +21,7 @@ body {
 }
 
 .Footer {
+  display: flex;
   text-align: center;
   background-color: black;
   position: absolute;
