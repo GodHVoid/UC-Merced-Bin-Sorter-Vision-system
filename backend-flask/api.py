@@ -22,8 +22,8 @@ def login():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             user_data = cursor.execute(
-                'SELECT username, password, authorization AS is_trainer FROM User WHERE username=?', 
-                (auth['user-id'].title(),)
+                'SELECT username, password, is_trainer FROM Users WHERE username=?', 
+                (auth['user-id'],)
             ).fetchall()
 
     # If query returns empty list or password is incorrect, return fail.
@@ -73,8 +73,8 @@ def post_data():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             cursor.execute(
-                'INSERT INTO Images (image_blob, defects, sys_verdic, emp_verdict, emp_id, override) VALUES (?, ?, ?, ?, ?, ?)', 
-                (auth[''], auth[''], auth[''], auth[''], auth[''], auth[''])
+                'INSERT INTO Images part_type, image_blob, emp_id, sys_verdict, emp_verdict VALUES (?, ?, ?, ?, ?,)', 
+                (auth[''], auth[''], auth[''], auth[''], auth[''],)
             )
 
     return jsonify({'status': 'success',
@@ -105,7 +105,7 @@ def get_system_data():
 
 @app.route('/api/livefeed', methods=['GET'])
 @cross_origin()
-@token_required
+# @token_required
 def livefeed():
     return Response(gen(VideoCamera()), mimetype='multipart/x-mixed-replace;boundary=frame')
 
