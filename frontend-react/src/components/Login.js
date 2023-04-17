@@ -41,17 +41,18 @@ function Login() {
   return (
     <div className="Login">
       <form onSubmit={handleLogin} className="loginForm">
-        <div className="form-group row">
-          <label htmlFor="username" className="col-sm-2 col-form-label">
+        <h1>LOGIN</h1>
+        <br />
+        <div>
+          <label htmlFor="username">
             Username:
           </label>
           <br />
-          <div className="col-sm-10">
+          <div>
             <input
               type="text"
               name="username"
               aria-label="Username"
-              className="form-control"
               id="username"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
@@ -59,17 +60,16 @@ function Login() {
           </div>
         </div>
         <br />
-        <div className="form-group row">
-          <label htmlFor="password" className="col-sm-2 col-form-label">
+        <div>
+          <label htmlFor="password">
             Password:
           </label>
           <br />
-          <div className="col-sm-10">
+          <div>
             <input
               type="password"
               name="password"
               aria-label="Password"
-              className="form-control"
               id="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -77,7 +77,7 @@ function Login() {
           </div>
         </div>
         <br />
-        <button className="btn btn-dark" type="submit">Login</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );

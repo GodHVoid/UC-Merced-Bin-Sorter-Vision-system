@@ -14,7 +14,7 @@ function LiveSort() {
         />
       </div>
 
-      {/* <SortFeed /> */}
+      <SortFeed />
     </div>
   );
 }
