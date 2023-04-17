@@ -1,6 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 function SortFeed() {
+
+  const req = "http://localhost:8080";
+
   const [partImg, setPartImg] = useState("");
   const [partName, setPartName] = useState("");
   const [systemVerdict, setSystemVerdict] = useState("");
@@ -10,14 +13,16 @@ function SortFeed() {
 
   //get part sorted information from Renato to dislpay
   useEffect(() => {
-    fetch("/api")
+    fetch(req+"/api/detection", {
+      method: "GET"
+    })
       .then((response) => response.json())
       .then((data) => {
-        setPartImg(data.partImg);
-        setPartName(data.partName);
-        setSystemVerdict(data.systemVerdict);
-        setPartID(data.partID);
-        setSystemErrors(data.systemErrors);
+        setPartImg(data["img"]);
+        setPartName(data["part-name"]);
+        setSystemVerdict(data["decision"]);
+        setPartID(data["id"]);
+        setSystemErrors(data["errors"]);
       })
       .catch((error) => {
         console.error("Error fetching data from server:", error);
