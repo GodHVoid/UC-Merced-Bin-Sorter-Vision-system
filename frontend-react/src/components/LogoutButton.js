@@ -1,10 +1,8 @@
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
 
 function LogoutButton() {
 
   const req = "http://localhost:8080";
-  const pathname = useLocation()["pathname"];
 
   if (!window.localStorage.getItem("token")) {
     return null;
@@ -22,13 +20,13 @@ function LogoutButton() {
     .then(res => res.json())
     .then( response => {
       localStorage.removeItem("token");
-      <Navigate to="/" />
+      window.location.href = "/";
     })
   };
 
   return(
     <div className="LogoutButton">
-      <button>
+      <button onClick={handleLogout}>
         Logout
       </button>
     </div>
