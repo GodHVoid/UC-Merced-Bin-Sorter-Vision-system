@@ -26,6 +26,7 @@ def employees(conn):
             FROM Users WHERE is_trainer != 1;"""
     cur.execute(sql)
     ret = cur.fetchall()
+    print("Employees:")
     for x in ret:
         print(x[0], x[1], x[2], x[3])
 
@@ -35,6 +36,7 @@ def anemployee(conn, name):
     #args = name
     cur.execute(sql,(name,))
     res = cur.fetchall()
+    print("\nEmployee:")
     print(res[0][0], res[0][1], res[0][2])
 
 def decisionDifferences(conn, num):
@@ -45,6 +47,16 @@ def decisionDifferences(conn, num):
                 AND P.user_id = emp_id;"""
     cur.execute(sql,(num,))
     res = cur.fetchall()
+    print("\nsys and emp decision differences")
+    for x in res:
+        print(x)
+
+def partsByEmp(conn, num):
+    cur = conn.cursor()
+    sql = """SELECT image_id, part_type, date, sys_verdict, emp_verdict, override FROM Images WHERE emp_id = ?"""
+    cur.execute(sql,(num,))
+    res = cur.fetchall()
+    print("\nparts by employee ", num)
     for x in res:
         print(x)
 
@@ -58,6 +70,8 @@ def main():
     anemployee(conn, username)
     #return sys vs emp decision on image
     decisionDifferences(conn,4)
+    # Parts by an employee
+    partsByEmp(conn, 3)
 
     closeConnection(conn, database)
 
