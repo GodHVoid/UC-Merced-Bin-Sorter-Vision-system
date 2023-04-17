@@ -163,7 +163,7 @@ WHERE emp_id = 3 -- can be changed to look up by name; or user input
     AND P.user_id = emp_id;
 
 -- 3) Returns all the parts by employee
-SELECT*
+SELECT *
 FROM Images
 WHERE emp_id = 5; --value can change
 
@@ -184,4 +184,4 @@ SELECT * FROM Overrides;
 -- 7) Return the last x-number of inputs to Override Tables
 SELECT * FROM Overrides ORDER BY override_id DESC LIMIT 2;
 -- Returns overrides made by a specific trainer
-SELECT* FROM Overrides WHERE trainer_id = 5;
+SELECT * FROM Overrides WHERE trainer_id = 5;
