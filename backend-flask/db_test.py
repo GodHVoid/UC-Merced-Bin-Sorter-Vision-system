@@ -3,6 +3,9 @@ import sqlite3
 from sqlite3 import Error
 import os
 from os import listdir
+import hashlib
+import config
+
 
 def openConnection(_dbFile):
     try:
@@ -19,6 +22,20 @@ def closeConnection(_conn, _dbFile):
         print("Success!")
     except Error as e:
         print(e)
+
+def hash_password(pwd):
+    pwd += config.salt
+    return hashlib.sha256(pwd.encode()).hexdigest()
+
+def insertUser(conn, newUser):
+    cur = conn.cursor()
+    hashed = hash_password(newUser[3])
+    sql = """INSERT INTO Users (firstname,lastname,username,password,is_trainer)
+            VALUES (?,?,?,?,?)"""
+    args = [newUser[0], newUser[1], newUser[2], hashed, newUser[4]]
+    cur.execute(sql,args)
+    conn.commit()
+    print("Added new user %s" %newUser[0])
 
 def employees(conn):
     cur = conn.cursor()
@@ -108,6 +125,7 @@ def latestEntries(conn):
     for x in res:
         print(x)
     return res
+
 def trainerOverrides(conn, num):
     cur = conn.cursor()
     sql = """SELECT* FROM Overrides WHERE trainer_id = ?;"""
@@ -121,6 +139,14 @@ def trainerOverrides(conn, num):
 def main():
     database = r'Bin_Sort_db.db'
     conn = openConnection(database)
+    # Insert Users with hashed password
+    users = [('Jason', 'Momoa', 'jmomoa', '123Momoa', 0),
+             ('Michael', 'Jackson', 'mjackson', '123Jackson', 0),
+             ('Michelle', 'Smith', 'msmith', '123Smith', 0)
+             ]
+    for user in users:
+        insertUser(conn,user)
+
     #return all employees
     returns = employees(conn)
     # if returns:
