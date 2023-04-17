@@ -29,6 +29,7 @@ def employees(conn):
     print("Employees:")
     for x in ret:
         print(x[0], x[1], x[2], x[3])
+    return ret
 
 def anemployee(conn, name):
     cur = conn.cursor()
@@ -38,6 +39,7 @@ def anemployee(conn, name):
     res = cur.fetchall()
     print("\nEmployee:")
     print(res[0][0], res[0][1], res[0][2])
+    return res
 
 def decisionDifferences(conn, num):
     cur = conn.cursor()
@@ -50,6 +52,7 @@ def decisionDifferences(conn, num):
     print("\nsys and emp decision differences")
     for x in res:
         print(x)
+    return res
 
 def partsByEmp(conn, num):
     cur = conn.cursor()
@@ -59,6 +62,7 @@ def partsByEmp(conn, num):
     print("\nparts by employee ", num)
     for x in res:
         print(x)
+    return res
 
 def partType(conn, part):
     cur = conn.cursor()
@@ -70,6 +74,7 @@ def partType(conn, part):
     print("\nBy part type:")
     for x in res:
         print(x)
+    return res
 
 def dataBase(conn):
     cur = conn.cursor()
@@ -81,6 +86,7 @@ def dataBase(conn):
     print("\nDatabase Page")
     for x in res:
         print(x)
+    return res
 
 def overrides(conn):
     cur = conn.cursor()
@@ -90,6 +96,7 @@ def overrides(conn):
     print("\nOverrides Table: ")
     for x in res:
         print(x)
+    return res
 
 def latestEntries(conn):
     cur = conn.cursor()
@@ -100,6 +107,7 @@ def latestEntries(conn):
     print("\nLatest Entries to Overrides:")
     for x in res:
         print(x)
+    return res
 def trainerOverrides(conn, num):
     cur = conn.cursor()
     sql = """SELECT* FROM Overrides WHERE trainer_id = ?;"""
@@ -108,29 +116,33 @@ def trainerOverrides(conn, num):
     print("\noverrides made by trainer %d :" %num)
     for x in res:
         print(x)
+    return res
 
 def main():
     database = r'Bin_Sort_db.db'
     conn = openConnection(database)
     #return all employees
-    employees(conn)
+    returns = employees(conn)
+    # if returns:
+    #     print("returns is not empty!!!")
     #return one employee
     username = "lortiz"
-    anemployee(conn, username)
+    returns2 = anemployee(conn, username)
     #return sys vs emp decision on image
-    decisionDifferences(conn,4)
+    returns3 = decisionDifferences(conn,4)
     # Parts by an employee
-    partsByEmp(conn, 3)
+    returns4 = partsByEmp(conn, 3)
     # Return parts by part_type
-    partType(conn, 'Plain')
+    returns5 = partType(conn, 'Plain')
     # For Database Page(Trainer)
-    dataBase(conn)
+    returns6 = dataBase(conn)
     # Return all entries in Overrides TAble
-    overrides(conn)
+    returns7 = overrides(conn)
     # Return the last x-number of inputs in Overrides Table
-    latestEntries(conn)
+    returns8 = latestEntries(conn)
     # REturns overrides by specific trainer
-    trainerOverrides(conn, 5)
+    returns9 = trainerOverrides(conn, 5)
+    
 
     closeConnection(conn, database)
 
