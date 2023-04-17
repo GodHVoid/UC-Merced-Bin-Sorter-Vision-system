@@ -3,35 +3,18 @@ import SortFeed from "./SortFeed";
 
 function LiveSort() {
 
-  const [frame, setFrame] = useState("");
-
-    fetch("/api/livefeed", {
-      method: "GET", 
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("token")
-      }
-    })
-    .then(res=> res.json())
-    .then(response => {
-      setFrame(response);
-    })
+  const req = "http://localhost:8080";
 
   return (
     <div className="LiveSort">
       <div className="livefeed">
         <img 
-          src={frame}
+          src={req+"/api/livefeed"}
           alt="Video"
         />
       </div>
 
-      <div className="sort-errors">
-        <p>hello</p>
-      </div>
-
-      <SortFeed />
+      {/* <SortFeed /> */}
     </div>
   );
 }

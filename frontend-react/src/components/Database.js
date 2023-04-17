@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-//acutal code
+
 function Database() {
   const req = "http://localhost:8080";
 
