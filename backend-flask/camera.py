@@ -1,25 +1,48 @@
 '''Camera class'''
 
 import cv2
-import numpy as np
-import torch
+from roboflow import Roboflow
 
-model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+rf = Roboflow(api_key="BrNUqD8TsBHLUOV9OLz7")
+project = rf.workspace("bin-detection").project("assembly-llgww")
+dataset = project.version(4)
 
+model = project.version(dataset.version).model
 
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
-        self.video.set(cv2.CAP_PROP_FPS, 2)
+        self.video.set(cv2.CAP_PROP_FPS, 30)
 
     def __del__(self):
         self.video.release()
 
     def get_frame(self):
         ret, frame = self.video.read()
-        result = model(frame,size=640)
-        image = np.squeeze(result.render())
-        ret, jpeg = cv2.imencode('.jpg', image)
+
+        predictions = model.predict(frame, confidence=40, overlap=30)
+
+        # accessing individual predicted boxes on each image
+        for bounding_box in predictions:
+            x0 = bounding_box['x'] - bounding_box['width'] / 2#start_column
+            x1 = bounding_box['x'] + bounding_box['width'] / 2#end_column
+            y0 = bounding_box['y'] - bounding_box['height'] / 2#start row
+            y1 = bounding_box['y'] + bounding_box['height'] / 2#end_row
+            start_point = (int(x0), int(y0))
+            end_point = (int(x1), int(y1))
+            cv2.rectangle(frame, start_point, end_point, color=(0,255,0), thickness=3)
+        
+            cv2.putText(
+                frame,
+                bounding_box["class"],
+                (int(x0), int(y0) - 10),
+                fontFace = cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale = 0.6,
+                color = (255, 255, 255),
+                thickness=2
+            )
+
+        ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
     
 def gen(camera):
