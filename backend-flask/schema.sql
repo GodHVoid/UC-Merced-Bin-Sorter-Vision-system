@@ -150,13 +150,14 @@ INSERT INTO Users (firstname,lastname,username,password,is_trainer) VALUES ('Jus
 -- Test Queries to receive specific data ------------------
 -- 1) Return employee info except for password
 SELECT user_id, firstname, lastname, username FROM Users WHERE is_trainer != 1;
-    -- returns infor based on userlogin
-    SELECT user_id, firstname, lastname
-    FROM Users
-    WHERE username = 'lortiz' --can be changed to user input
+
+-- returns infor based on userlogin
+SELECT user_id, firstname, lastname
+FROM Users
+WHERE username = 'lortiz' --can be changed to user input
 
 -- 2) Returns sys vs emp decision on image
-SELECT * 
+SELECT P.firstname, image_id, part_type, date, emp_id, sys_verdict, emp_verdict, override 
 FROM Images, (SELECT firstname, user_id FROM Users) as P
 WHERE emp_id = 3 -- can be changed to look up by name; or user input
     AND P.user_id = emp_id;
