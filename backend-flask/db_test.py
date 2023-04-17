@@ -60,6 +60,55 @@ def partsByEmp(conn, num):
     for x in res:
         print(x)
 
+def partType(conn, part):
+    cur = conn.cursor()
+    sql = """SELECT image_id, part_type, date, emp_id, sys_verdict, emp_verdict, override
+            FROM Images
+            WHERE part_type = ?"""
+    cur.execute(sql, (part,))
+    res = cur.fetchall()
+    print("\nBy part type:")
+    for x in res:
+        print(x)
+
+def dataBase(conn):
+    cur = conn.cursor()
+    sql = """SELECT emp_id, Images.date as Date, 'image here', sys_verdict, emp_verdict, Corner_damage, Edge_damage, Logo_repair, Cleat_damage, Clear_repair
+        FROM Images, Part_Conditions
+        WHERE image_id = p_image_id"""
+    cur.execute(sql)
+    res = cur.fetchall()
+    print("\nDatabase Page")
+    for x in res:
+        print(x)
+
+def overrides(conn):
+    cur = conn.cursor()
+    sql = """SELECT * FROM Overrides;"""
+    cur.execute(sql)
+    res = cur.fetchall()
+    print("\nOverrides Table: ")
+    for x in res:
+        print(x)
+
+def latestEntries(conn):
+    cur = conn.cursor()
+    # will display the last two entries in the table
+    sql = """SELECT * FROM Overrides ORDER BY override_id DESC LIMIT 2;"""
+    cur.execute(sql)
+    res = cur.fetchall()
+    print("\nLatest Entries to Overrides:")
+    for x in res:
+        print(x)
+def trainerOverrides(conn, num):
+    cur = conn.cursor()
+    sql = """SELECT* FROM Overrides WHERE trainer_id = ?;"""
+    cur.execute(sql,(num,))
+    res = cur.fetchall()
+    print("\noverrides made by trainer %d :" %num)
+    for x in res:
+        print(x)
+
 def main():
     database = r'Bin_Sort_db.db'
     conn = openConnection(database)
@@ -72,6 +121,16 @@ def main():
     decisionDifferences(conn,4)
     # Parts by an employee
     partsByEmp(conn, 3)
+    # Return parts by part_type
+    partType(conn, 'Plain')
+    # For Database Page(Trainer)
+    dataBase(conn)
+    # Return all entries in Overrides TAble
+    overrides(conn)
+    # Return the last x-number of inputs in Overrides Table
+    latestEntries(conn)
+    # REturns overrides by specific trainer
+    trainerOverrides(conn, 5)
 
     closeConnection(conn, database)
 
