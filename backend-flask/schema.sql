@@ -173,7 +173,7 @@ FROM Images
 WHERE part_type = 'Base-pallet'; -- can change the string type
 
 -- 5) for Database Page (trainer)
-SELECT emp_id, Images.date as Date, image_blob, sys_verdict, emp_verdict, Corner_damage, Edge_damage, Logo_repair, Cleat_damage, Clear_repair
+SELECT emp_id, Images.date as Date, 'image here', sys_verdict, emp_verdict, Corner_damage, Edge_damage, Logo_repair, Cleat_damage, Clear_repair
 FROM Images, Part_Conditions
 WHERE image_id = p_image_id
 
