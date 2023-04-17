@@ -1,32 +1,92 @@
-import React, { useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 function SortFeed() {
-  const [feedback, setFeedback] = useState("");
+  const [partImg, setPartImg] = useState("");
+  const [partName, setPartName] = useState("");
+  const [systemVerdict, setSystemVerdict] = useState("");
+  const [partID, setPartID] = useState("");
+  const [systemErrors, setSystemErrors] = useState([]);
+  const [verdictSubmitted, setVerdictSubmitted] = useState(false);
 
-  function sendFeedback(feedbackType) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = function () {
-      setFeedback(xhttp.responseText);
-    };
-    xhttp.onerror = function () {
-      console.error("Error sending feedback");
-    };
-    xhttp.open("POST", "/feedback");
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({ feedback: feedbackType }));
-  }
+  //get part sorted information
+  useEffect(() => {
+    fetch("/api")
+      .then((response) => response.json())
+      .then((data) => {
+        setPartImg(data.partImg);
+        setPartName(data.partName);
+        setSystemVerdict(data.systemVerdict);
+        setPartID(data.partID);
+        setSystemErrors(data.systemErrors);
+      })
+      .catch((error) => {
+        console.error("Error fetching data from server:", error);
+      });
+  }, []);
+
+  //sends userverdict
+  const handleUserverdict = (event, userVerdict) => {
+    event.preventDefault();
+    fetch("/api/userverdict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userVerdict }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        //confirm submission
+        setVerdictSubmitted(true);
+      })
+      .catch((error) => {
+        console.error("Error sending user verdict to server:", error);
+      });
+  };
 
   return (
-    <div className="feedbackButton">
-      <p>{feedback}</p>
-      <button className="btn btn-dark" onClick={() => sendFeedback("agree")}>
-        Agree
-      </button>
-      <button className="btn btn-dark" onClick={() => sendFeedback("disagree")}>
-        Disagree
-      </button>
-    </div>
+    //line 45-54 for sort information
+    //line 56-67 for userverdict submission and confirmation
+    <Fragment>
+      <div className="partImg">
+        <img src="partImg" alt={partName} />
+      </div>
+      <div className="systemVerdict">
+        <h2>{partName}</h2>
+        <h2>{systemVerdict}</h2>
+        <h2>{partID}</h2>
+        <ul>
+          {systemErrors.map((error) => (
+            <li>{error}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="feedbackButton">
+        <button class="btn btn-dark" onClick={() => handleUserverdict("agree")}>
+          Agree
+        </button>
+        <button
+          class="btn btn-dark"
+          onClick={() => handleUserverdict("disagree")}
+        >
+          Disagree
+        </button>
+      </div>
+      {verdictSubmitted && <h3>Feedback Submitted!</h3>}
+    </Fragment>
   );
 }
 
 export default SortFeed;
+/*
+{
+  "partName": "topcover", --<h2>
+  "img": "", -- <img>
+  "ID", --<h2>
+  "decision": "agree", <h2></h2>
+  "errors": [
+    "Error 1",
+    "Error 2",
+    "Error 3"
+  ] -- <ul>
+}*/
