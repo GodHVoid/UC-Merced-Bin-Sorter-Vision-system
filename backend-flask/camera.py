@@ -2,6 +2,7 @@
 
 import cv2
 from roboflow import Roboflow
+import os
 
 rf = Roboflow(api_key="BrNUqD8TsBHLUOV9OLz7")
 project = rf.workspace("bin-detection").project("assembly-llgww")
@@ -11,6 +12,7 @@ model = project.version(dataset.version).model
 
 class VideoCamera(object):
     def __init__(self):
+        # path = os.path.abspath('./images/sides12.MP4')
         self.video = cv2.VideoCapture(0)
         self.video.set(cv2.CAP_PROP_FPS, 30)
 
@@ -21,6 +23,9 @@ class VideoCamera(object):
         ret, frame = self.video.read()
 
         predictions = model.predict(frame, confidence=40, overlap=30)
+        predictions_json = predictions.json()
+        # printing all detection results from the image
+        print(predictions_json)
 
         # accessing individual predicted boxes on each image
         for bounding_box in predictions:
@@ -31,7 +36,7 @@ class VideoCamera(object):
             start_point = (int(x0), int(y0))
             end_point = (int(x1), int(y1))
             cv2.rectangle(frame, start_point, end_point, color=(0,255,0), thickness=3)
-        
+    
             cv2.putText(
                 frame,
                 bounding_box["class"],

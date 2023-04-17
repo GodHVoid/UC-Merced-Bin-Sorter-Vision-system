@@ -52,7 +52,7 @@ function SortFeed() {
   return (
     //line 45-54 for sort information
     //line 56-67 for userverdict submission and confirmation
-    <Fragment>
+    <span>
       <div className="partImg">
         <img src="partImg" alt={partName} />
       </div>
@@ -82,7 +82,7 @@ function SortFeed() {
         </button>
       </div>
       {verdictSubmitted && <h3>Feedback Submitted!</h3>}
-    </Fragment>
+    </span>
   );
 }
 

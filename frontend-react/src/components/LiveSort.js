@@ -7,12 +7,14 @@ function LiveSort() {
 
   return (
     <div className="LiveSort">
-      <div className="livefeed">
+      <span className="livefeed">
         <img 
           src={req+"/api/livefeed"}
           alt="Video"
+          height={500}
+          width={800}
         />
-      </div>
+      </span>
 
       <SortFeed />
     </div>
