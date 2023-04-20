@@ -1,133 +1,73 @@
-import React, { useState, useEffect } from "react";
-//acutal code
-function Database() {
+import React, { useState, useEffect, Fragment } from "react";
+function DataTable() {
   const [data, setData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchWorker, setSearchWorker] = useState([]);
 
   useEffect(() => {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = function () {
-      if (this.status === 200) {
-        setData(JSON.parse(this.responseText));
-      }
-    };
-    xhttp.open("GET", "/api/data", true);
-    xhttp.send();
+    fetchData();
   }, []);
-  const filteredData = data.filter((row) =>
-    row.id.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  //get data to populate table, change address
+  const fetchData = () => {
+    fetch("/api")
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  };
+  //search by worker
+  const handleSearch = () => {
+    if (searchWorker !== "") {
+      fetch("/api?search=${searchWorker}")
+        .then((response) => response.json())
+        .then((data) => setData(data));
+    } else {
+      fetchData();
+    }
+  };
   return (
-    <div>
-      <div className="form-group">
+    <Fragment>
+      <div>
         <input
           type="text"
-          className="form-control"
-          placeholder="Search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by name"
+          value={searchWorker}
+          onChange={(e) => setSearchWorker(e.target.value)}
         />
+        <button onClick={handleSearch}>Search</button>
       </div>
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Image</th>
-            <th>Erros</th>
-            <th>System Verdict</th>
-            <th>Worker Verdict</th>
-            <th>Worker ID</th>
+            <th scope="col">Part ID</th>
+            <th scope="col">Part Name</th>
+            <th scope="col">Part Image</th>
+            <th scope="col">Part Damages</th>
+            <th scope="col">system Verdict</th>
+            <th scope="col">Woker Verdict</th>
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((row) => (
-            <tr key={row.id}>
-              <td>{row.id}</td>
+          {data.map((part) => (
+            <tr key={part.id}>
+              <th scope="row">{part.id}</th>
+              <td>{part.name}</td>
               <td>
-                <img
-                  src={row.img}
-                  alt="Image"
-                  style={{ width: "50px", height: "50px", cursor: "pointer" }}
-                  onClick={() => window.open(row.img, "_blank")}
-                />
+                <a href={part.imageLink} target="_blank" rel="noreferrer">
+                  <img src={part.imageLink} alt={part.name} />
+                </a>
               </td>
-              <td>{row.errors}</td>
-              <td>{row.systemVerdict}</td>
-              <td>{row.workerVerdict}</td>
-              <td>{row.workerID}</td>
+              <td>
+                <ul>
+                  {part.damages.map((damage) => (
+                    <li key={damage}>{damage}</li>
+                  ))}
+                </ul>
+              </td>
+              <td>{part.systemVerdict}</td>
+              <td>{part.workerVerdict}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </Fragment>
   );
 }
-export default Database;
-
-//local testing
-/*function Database() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      img: "https://images.unsplash.com/photo-1588771209601-b7b56efaf78b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      errors: "None",
-      systemVerdict: "Passed",
-      workerVerdict: "Rejected",
-      workerID: "123",
-    },
-    {
-      id: 2,
-      img: "https://images.unsplash.com/photo-1588771209601-b7b56efaf78b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      errors: "Missing data",
-      systemVerdict: "Failed",
-      workerVerdict: "Rejected",
-      workerID: "456",
-    },
-    {
-      id: 3,
-      img: "https://images.unsplash.com/photo-1588771209601-b7b56efaf78b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      errors: "Incorrect data",
-      systemVerdict: "Failed",
-      workerVerdict: "Approved",
-      workerID: "789",
-    },
-  ]);
-
-  return (
-    <table className="table table-hover">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Image</th>
-          <th>Errors</th>
-          <th>System Verdict</th>
-          <th>Worker Verdict</th>
-          <th>Worker ID</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row) => (
-          <tr key={row.id}>
-            <td>{row.id}</td>
-            <td>
-              <a href={morningStarLogo} target="_blank">
-                <img
-                  src={morningStarLogo}
-                  alt="Morning Star Logo"
-                  style={{ width: "50px", height: "50px", cursor: "pointer" }}
-                />
-              </a>
-            </td>
-            <td>{row.errors}</td>
-            <td>{row.systemVerdict}</td>
-            <td>{row.workerVerdict}</td>
-            <td>{row.workerID}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-export default Database;
-*/
+export default DataTable;
