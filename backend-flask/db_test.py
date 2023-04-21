@@ -137,7 +137,7 @@ def trainerOverrides(conn, num):
     return res
 
 def main():
-    database = r'Bin_Sort_db.db'
+    database = r'database.db'
     conn = openConnection(database)
     # Insert Users with hashed password
     users = [('Jason', 'Momoa', 'jmomoa', '123Momoa', 0),

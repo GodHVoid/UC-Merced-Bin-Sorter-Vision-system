@@ -54,6 +54,4 @@ def hash_password(pwd):
     return hashlib.sha256(pwd.encode()).hexdigest()
 
 def check_password(pwd, stored_pwd):
-    # pwd += config.salt
-    # return hash_password(pwd) == stored_pwd
-    return pwd == stored_pwd
+    return hash_password(pwd) == stored_pwd
