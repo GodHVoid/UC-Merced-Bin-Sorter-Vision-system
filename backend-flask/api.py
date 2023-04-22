@@ -6,7 +6,7 @@ from flask import request, jsonify, Response
 from flask_cors import CORS, cross_origin
 from contextlib import closing
 import sqlite3
-from datetime import datetime 
+import base64
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config.secret_key
@@ -52,18 +52,18 @@ def logout():
                     'message': 'successful logout.'})
 
 @app.route('/api/data', methods=['GET'])
-@token_required
+# @token_required
 def get_data():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             data = cursor.execute(
-                'SELECT * FROM Images'
+                'SELECT image_id, part_type, date, emp_id, sys_verdict, emp_verdict FROM Images'
             ).fetchall()
     
     return jsonify({'status': 'success',
                     'code': 200,
                     'data': data,
-                    'message': 'successfully retrieved last 100 data entries.'})
+                    'message': 'successfully retrieved data entries.'})
 
 @app.route('/api/data', methods=['POST'])
 @token_required
@@ -81,6 +81,25 @@ def post_data():
                     'code': 200,
                     'data': None,
                     'message': 'successfully posted to database.'})
+
+@app.route('/api/data/image', methods=['GET'])
+def get_image_data():
+    image_id = request.args.get('id')
+    with closing(sqlite3.connect(config.database)) as conn:
+        with closing(conn.cursor()) as cursor:
+            data = cursor.execute(
+                'SELECT image_blob FROM Images Where image_id=?',
+                (image_id,)
+            ).fetchall()
+
+    # img = base64.b64encode(data[0][0]).decode()
+
+    return data[0][0]
+
+    # return jsonify({'status': 'success',
+    #                 'code': 200,
+    #                 'data': img,
+    #                 'message': 'successfully retrieved data entries.'})
 
 @app.route('/api/data/<int:id>', methods=['GET'])
 @token_required
