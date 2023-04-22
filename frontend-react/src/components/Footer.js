@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import decode from "../routes/Auth";
 import LogoutButton from "./LogoutButton";
 import Popup from "./Popup";
+import Instructions from "./Instructions";
 
 function Footer() {
 
@@ -27,7 +28,7 @@ function Footer() {
 
       <button onClick={(event) => setButtonTrigger(true)}>Instuctions</button>
       <Popup trigger={buttonTrigger} setTrigger={setButtonTrigger}>
-        <h1>HELLOS</h1>
+        <Instructions />
       </Popup>
 
       <LogoutButton />
