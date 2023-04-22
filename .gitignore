@@ -17,4 +17,4 @@
 
 **/*.pt
 
-./backend-flask/imgs/
+backend-flask/imgs/
