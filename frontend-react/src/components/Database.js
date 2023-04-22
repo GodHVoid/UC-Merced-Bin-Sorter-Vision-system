@@ -1,69 +1,96 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, Fragment } from "react";
+import Popup from "./Popup";
+import PartImage from "./PartImage";
 function Database() {
-  const req = "http://localhost:8080";
-
   const [data, setData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchWorker, setSearchWorker] = useState([]);
+  const [buttonTrigger, setButtonTrigger] = useState("");
+  const [ImgId, setImgId] = useState("");
+
+  const req = 'http://localhost:8080';
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  //get data to populate table, change address
+  const fetchData = () => {
     fetch(req+"/api/data", {
-      method: "GET",
+      method: "GET", 
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("token")
+        "x-access-token": localStorage.getItem["token"]
       }
     })
-  }, []);
+      .then((response) => response.json())
+      .then((data) => { console.log(data)
+        setData(data)});
+  };
 
-  const filteredData = data.filter((row) =>
-    row.id.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  //search by worker
+  const handleSearch = () => {
+    if (searchWorker !== "") {
+      fetch("/api?search=${searchWorker}")
+        .then((response) => response.json())
+        .then((data) => setData(data));
+    } else {
+      fetchData();
+    }
+  };
 
   return (
-    <div>
-      <div className="form-group">
+    <Fragment>
+      <div>
         <input
           type="text"
-          className="form-control"
-          placeholder="Search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by name"
+          value={searchWorker}
+          onChange={(e) => setSearchWorker(e.target.value)}
         />
+        <button onClick={handleSearch}>Search</button>
       </div>
       <table className="table table-hover">
         <thead>
           <tr>
-            <th>Data</th>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Date</th>
             <th>Image</th>
-            <th>Errors</th>
-            <th>System Verdict</th>
-            <th>Worker Verdict</th>
-            <th>Worker ID</th>
+            <th>Sorter Id</th>
+            <th>System Decision</th>
+            <th>Employee Decision</th>
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((row) => (
-            <tr key={row.id}>
-              <td>{row.id}</td>
-              <td>
-                <img
-                  src={row.img}
-                  alt="Image"
-                  style={{ width: "50px", height: "50px", cursor: "pointer" }}
-                  onClick={() => window.open(row.img, "_blank")}
-                />
-              </td>
-              <td>{row.errors}</td>
-              <td>{row.systemVerdict}</td>
-              <td>{row.workerVerdict}</td>
-              <td>{row.workerID}</td>
+          {data.data?.map((item, i) => {
+            return(
+            <tr>
+              <th >{item[0]}</th>
+              <th >{item[1]}</th>
+              <th >{item[2]}</th>
+              <th key={i+1}>
+                <button onClick={(event) => {
+                  setButtonTrigger(true)
+                  setImgId(i+1);
+                  }}>
+                  View
+                  </button>
+              </th>
+              <th >{item[3]}</th>
+              <th >{item[4]}</th>
+              <th >{item[5]}</th>
             </tr>
-          ))}
+            )
+          })}
         </tbody>
       </table>
-    </div>
+
+      <Popup trigger={buttonTrigger} setTrigger={setButtonTrigger}>
+        <PartImage img_id={ImgId} />
+      </Popup>
+      
+    </Fragment>
   );
 }
 export default Database;
