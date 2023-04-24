@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import decode from "../routes/Auth";
+import "./Login.css";
 
 function Login() {
   const request = "http://localhost:8080";
