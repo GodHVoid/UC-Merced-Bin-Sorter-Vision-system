@@ -18,3 +18,5 @@
 **/*.pt
 
 backend-flask/imgs/
+
+**/*.mp4
