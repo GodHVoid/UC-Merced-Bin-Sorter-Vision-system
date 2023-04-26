@@ -92,14 +92,7 @@ def get_image_data():
                 (image_id,)
             ).fetchall()
 
-    # img = base64.b64encode(data[0][0]).decode()
-
     return data[0][0]
-
-    # return jsonify({'status': 'success',
-    #                 'code': 200,
-    #                 'data': img,
-    #                 'message': 'successfully retrieved data entries.'})
 
 @app.route('/api/data/<int:id>', methods=['GET'])
 @token_required
