@@ -12,7 +12,7 @@ function LiveSort() {
           src={req+"/api/livefeed"}
           alt="Video"
           height={500}
-          width={800}
+          width={900}
         />
       </span>
 

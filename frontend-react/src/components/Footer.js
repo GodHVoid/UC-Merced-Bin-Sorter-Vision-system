@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import decode from "../routes/Auth";
 import LogoutButton from "./LogoutButton";
 import Popup from "./Popup";
 import Instructions from "./Instructions";
+import "../styles/Footer.css"
 
 function Footer() {
 
@@ -18,11 +19,7 @@ function Footer() {
 
   return(
     <footer className="Footer">
-      <img 
-        src={require("../assets/liberty-logo.jpg")} 
-        alt="Logo"
-        width="5%"
-      />
+      <h1>Livesort</h1>
 
       <h3>{text}</h3>
 

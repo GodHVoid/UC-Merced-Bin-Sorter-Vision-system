@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import decode from "../routes/Auth";
-import "./Login.css";
+import "../styles/Login.css";
 
 function Login() {
   const request = "http://localhost:8080";
@@ -41,45 +41,61 @@ function Login() {
 
   return (
     <div className="Login">
-      <form onSubmit={handleLogin} className="loginForm">
-        <h1>LOGIN</h1>
+      
+      <div className="Login-logo">
+        <img 
+          src={require("../assets/morning-star-logo.jpg")}
+          alt="MorningStarLogo"
+        />
         <br />
-        <div>
-          <label htmlFor="username">
-            Username:
-          </label>
+        <img 
+          src={require("../assets/liberty-logo.jpg")}
+          alt="LibertyPackingCoLogo"
+        />
+      </div>
+
+      <div className="Login-form">
+        <form onSubmit={handleLogin}>
+          <h1>Livesort Login</h1>
           <br />
           <div>
-            <input
-              type="text"
-              name="username"
-              aria-label="Username"
-              id="username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-            />
+            <label htmlFor="username">
+              Username:
+            </label>
+            <br />
+            <div>
+              <input
+                type="text"
+                name="username"
+                aria-label="Username"
+                id="username"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </div>
           </div>
-        </div>
-        <br />
-        <div>
-          <label htmlFor="password">
-            Password:
-          </label>
           <br />
           <div>
-            <input
-              type="password"
-              name="password"
-              aria-label="Password"
-              id="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
+            <label htmlFor="password">
+              Password:
+            </label>
+            <br />
+            <div>
+              <input
+                type="password"
+                name="password"
+                aria-label="Password"
+                id="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </div>
           </div>
-        </div>
-        <br />
-        <button type="submit">Login</button>
-      </form>
+          <br />
+          <button className="submit-btn" type="submit">Login</button>
+        </form>
+      </div>
+
     </div>
   );
 }

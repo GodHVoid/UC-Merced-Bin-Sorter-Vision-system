@@ -9,6 +9,10 @@ function Database() {
 
   const req = 'http://localhost:8080';
 
+  const setDecision = (input) => {
+    return (input === "true") ? "Agree" : "Disagree";
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -24,8 +28,7 @@ function Database() {
       }
     })
       .then((response) => response.json())
-      .then((data) => { console.log(data)
-        setData(data)});
+      .then((data) => setData(data));
   };
 
   //search by worker
@@ -75,11 +78,11 @@ function Database() {
                   setImgId(i+1);
                   }}>
                   View
-                  </button>
+                </button>
               </th>
               <th >{item[3]}</th>
-              <th >{item[4]}</th>
-              <th >{item[5]}</th>
+              <th >{setDecision(item[4])}</th>
+              <th >{setDecision(item[5])}</th>
             </tr>
             )
           })}
