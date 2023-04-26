@@ -12,23 +12,30 @@ function Footer() {
 
   if (window.localStorage.getItem("token")) {
     const data = decode(window.localStorage.getItem("token"));
-    text = data["user-id"]
+    text = "User: " + data["user-id"]
   } else {
     text = "";
   }
 
   return(
     <footer className="Footer">
-      <h1>Livesort</h1>
 
-      <h3>{text}</h3>
+      <div>
+        <h1 className="title">Livesort</h1> 
+        <h3 className="User">{text}</h3>
+      </div>
+      
+      <div>
+        <button className="Footer-btns" onClick={(event) => setButtonTrigger(true)}>Instuctions</button>
+        <Popup trigger={buttonTrigger} setTrigger={setButtonTrigger}>
+          <Instructions />
+        </Popup>
+      </div>
 
-      <button onClick={(event) => setButtonTrigger(true)}>Instuctions</button>
-      <Popup trigger={buttonTrigger} setTrigger={setButtonTrigger}>
-        <Instructions />
-      </Popup>
+      <div>
+        <LogoutButton />
+      </div>
 
-      <LogoutButton />
     </footer>
   );
 }

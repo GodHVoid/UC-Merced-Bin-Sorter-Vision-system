@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/Footer.css"
 
 function LogoutButton() {
 
@@ -26,7 +27,7 @@ function LogoutButton() {
 
   return(
     <div className="LogoutButton">
-      <button onClick={handleLogout}>
+      <button className="Footer-btns" onClick={handleLogout}>
         Logout
       </button>
     </div>
