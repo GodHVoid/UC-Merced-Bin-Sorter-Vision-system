@@ -1,0 +1,40 @@
+.TrainerDash {
+  text-align: center;
+}
+
+.info-block {
+  border-bottom: 2px solid #252537;
+}
+
+.nav-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.dash-btns {
+  display: inline-block;
+  color: #252537;
+  background: rgba(128, 128, 128, 0.25);
+  box-shadow: 0 9px 50px hsla(0, 0%, 0%, 0.50);
+
+  width: 80%;
+  height: 500px;
+
+  padding: 0 20px;
+  border-radius: 25px;
+  
+  outline: none;
+  border: none;
+
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s linear;
+  
+  margin: 7% auto;
+  letter-spacing: 0.05em;
+  font-size: 48pt;
+}
+
+.dash-btns:hover {
+  box-shadow: 0 9px 50px hsla(0, 100%, 50%, 0.25);
+}
