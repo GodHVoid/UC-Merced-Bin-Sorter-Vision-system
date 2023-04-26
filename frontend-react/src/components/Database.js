@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { Link } from "react-router-dom";
 import Popup from "./Popup";
 import PartImage from "./PartImage";
+import "../styles/Database.css"
+
 function Database() {
   const [data, setData] = useState([]);
   const [searchWorker, setSearchWorker] = useState([]);
@@ -44,7 +47,7 @@ function Database() {
 
   return (
     <Fragment>
-      <div>
+      <div className="toolbar">
         <input
           type="text"
           placeholder="Search by name"
@@ -52,8 +55,10 @@ function Database() {
           onChange={(e) => setSearchWorker(e.target.value)}
         />
         <button onClick={handleSearch}>Search</button>
+        <button className="system-btn">System</button>
       </div>
-      <table className="table table-hover">
+
+      <table className="datatable">
         <thead>
           <tr>
             <th>Id</th>
@@ -80,7 +85,11 @@ function Database() {
                   View
                 </button>
               </th>
-              <th >{item[3]}</th>
+              <th >
+                <Link>
+                  {item[3]}
+                </Link>
+              </th>
               <th >{setDecision(item[4])}</th>
               <th >{setDecision(item[5])}</th>
             </tr>
