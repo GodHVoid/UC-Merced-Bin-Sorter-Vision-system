@@ -12,15 +12,32 @@
 
 .Popup-inner {
   position: relative;
-  padding: 32px;
+  padding: 10px;
   width: 100%;
-  max-width: 640px;
+  max-width: 70%;
+  height: 80vh;
+  max-height: 70vh;
   background-color: #FFF;
   border-radius: 10px;
+  display: grid;
 }
 
 .Popup-inner .close-btn {
   position: absolute;
   top: 16px;
   right: 16px;
+}
+
+.close-btn {
+  width: 100px;
+  height: 40px;
+  font-size: 12pt;
+  border: none;
+  transition: all 0.2s linear;
+  background: rgba(168,168,168,1);
+  border-radius: 10px;
+}
+
+.close-btn:hover {
+  box-shadow: 0 9px 50px hsla(0, 100%, 50%, 0.25);
 }
