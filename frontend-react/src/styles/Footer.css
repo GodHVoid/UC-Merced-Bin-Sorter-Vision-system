@@ -1,0 +1,13 @@
+.Footer {
+  display: flex;
+  text-align: center;
+  background-color: #fff;
+  position: absolute;
+  padding: 10px;
+  bottom: 0;
+  width: 80%;
+}
+
+button {
+  background-color: red;
+}
