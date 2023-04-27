@@ -14,6 +14,12 @@
   background-color: rgba(128, 128, 128, 0.25);
 }
 
+.table-div {
+  width: 100%;
+  height: 80vh;
+  overflow: scroll;
+}
+
 .toolbar {
   position: sticky;
   top: 0;
@@ -23,10 +29,15 @@
   padding-bottom: 10px;
 }
 
+.toolbar h2 {
+  display: inline;
+  padding: 10px;
+}
+
 .toolbar button {
   display: inline-block;
   color: #252537;
-  background: rgba(128, 128, 128, 0.25);
+  background: rgba(200, 200, 200, 1);
 
   width: 100px;
   height: 25px;

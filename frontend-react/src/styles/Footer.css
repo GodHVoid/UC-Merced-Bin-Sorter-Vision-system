@@ -1,5 +1,5 @@
 .Footer {
-  background-color: rgba(128, 128, 128, 0.25);
+  background-color: rgba(200, 200, 200, 1);
   box-shadow: 0 9px 50px hsla(0, 0%, 0%, 0.50);
   position: fixed;
   display: grid;
