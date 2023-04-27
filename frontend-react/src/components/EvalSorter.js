@@ -40,16 +40,6 @@ function EvalSorter(props) {
     setInputValue(event.target.value);
   };
 
-  const handleButtonClick = () => {
-    fetch(`api/search?query=${inputValue}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAgreePercentage(data.agreePercentage);
-        setDisagreePercentage(data.disagreePercentage);
-      })
-      .catch((error) => console.error(error));
-  };
-
   return (
     <div>
       <Link to={"/data"}>
