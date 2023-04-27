@@ -94,20 +94,40 @@ def get_image_data():
 
     return data[0][0]
 
-@app.route('/api/data/<int:id>', methods=['GET'])
-@token_required
-def get_sorter_data(id):
+@app.route('/api/data/sorter', methods=['GET'])
+def get_sorter_data():
+    sorter_id = request.args.get('id')
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             data = cursor.execute(
-                'SELECT TOP 100 * FROM Images WHERE emp_id=?',
-                (id)
-            )
+                'SELECT image_id, part_type, date, emp_id, sys_verdict, emp_verdict FROM Images WHERE emp_id=?',
+                (sorter_id)
+            ).fetchall()
+
+            sorter = cursor.execute(
+                'SELECT firstname, lastname, is_trainer FROM Users WHERE user_id=?',
+                (sorter_id)
+            ).fetchall()
+
+    agree = 0
+    for entry in data:
+        if entry[4] == entry[5]:
+            agree += 1
+
+    agree_percentage = (agree/len(data)) * 100 
+
+    t = "False"
+    if sorter[0][2]: 
+        t = "True"
+    
+    sorter_info = {"name": sorter[0][0]+' '+sorter[0][1], 
+                   "trainer": t,
+                   "agreement": '%.2f' % agree_percentage}
 
     return jsonify({'status': 'success',
                     'code': 200,
                     'data': data,
-                    'message': f'successfully retrieved last 100 entries for {id}'})
+                    'message': sorter_info})
 
 @app.route('/api/detection', methods=['GET'])
 def get_detection_data():
