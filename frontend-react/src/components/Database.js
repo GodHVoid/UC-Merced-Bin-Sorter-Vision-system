@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import PartImage from "./PartImage";
 import "../styles/Database.css"
@@ -55,7 +55,9 @@ function Database() {
           onChange={(e) => setSearchWorker(e.target.value)}
         />
         <button onClick={handleSearch}>Search</button>
-        <button className="system-btn">System</button>
+        <Link to={"/model-eval"}>
+          <button className="model-btn">Model</button>          
+        </Link>
       </div>
 
       <table className="datatable">
@@ -86,7 +88,7 @@ function Database() {
                 </button>
               </th>
               <th >
-                <Link>
+                <Link to={"./sorter-eval"} state={item[3]}>
                   {item[3]}
                 </Link>
               </th>
