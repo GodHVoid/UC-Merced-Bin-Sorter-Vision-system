@@ -48,6 +48,10 @@ function Database() {
   return (
     <Fragment>
       <div className="toolbar">
+        <Link to={"/trainer-dashboard"}>
+          <button>Back</button>
+        </Link>
+        <h2>Database</h2>
         <input
           type="text"
           placeholder="Search by name"
@@ -60,45 +64,47 @@ function Database() {
         </Link>
       </div>
 
-      <table className="datatable">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Type</th>
-            <th>Date</th>
-            <th>Image</th>
-            <th>Sorter Id</th>
-            <th>System Decision</th>
-            <th>Employee Decision</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.data?.map((item, i) => {
-            return(
+      <div className="table-div">
+        <table className="datatable">
+          <thead>
             <tr>
-              <th >{item[0]}</th>
-              <th >{item[1]}</th>
-              <th >{item[2]}</th>
-              <th key={i+1}>
-                <button onClick={(event) => {
-                  setButtonTrigger(true)
-                  setImgId(i+1);
-                  }}>
-                  View
-                </button>
-              </th>
-              <th >
-                <Link to={"./sorter-eval"} state={item[3]}>
-                  {item[3]}
-                </Link>
-              </th>
-              <th >{setDecision(item[4])}</th>
-              <th >{setDecision(item[5])}</th>
+              <th>Id</th>
+              <th>Type</th>
+              <th>Date</th>
+              <th>Image</th>
+              <th>Sorter Id</th>
+              <th>System Decision</th>
+              <th>Employee Decision</th>
             </tr>
-            )
-          })}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.data?.map((item, i) => {
+              return(
+              <tr>
+                <th >{item[0]}</th>
+                <th >{item[1]}</th>
+                <th >{item[2]}</th>
+                <th key={i+1}>
+                  <button onClick={(event) => {
+                    setButtonTrigger(true)
+                    setImgId(i+1);
+                    }}>
+                    View
+                  </button>
+                </th>
+                <th >
+                  <Link to={"./sorter-eval"} state={item[3]}>
+                    {item[3]}
+                  </Link>
+                </th>
+                <th >{setDecision(item[4])}</th>
+                <th >{setDecision(item[5])}</th>
+              </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
 
       <Popup trigger={buttonTrigger} setTrigger={setButtonTrigger}>
         <PartImage img_id={ImgId} />
