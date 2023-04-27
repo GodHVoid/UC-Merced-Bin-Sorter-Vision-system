@@ -26,14 +26,14 @@ def dummy_data(cur):
 
     part_name = ['metals', 'plains', 'tops', 'base']
     decisions = ['false', 'true']
-    for i in range(1,10):
-        with open('./imgs/'+str(i)+'.png', 'rb') as f:
+    for i in range(1,200):
+        with open('./imgs/'+str((i%10))+'.png', 'rb') as f:
             img = f.read()
 
         cur.execute(
             'INSERT INTO Images (part_type, image_blob, emp_id, sys_verdict, emp_verdict) \
                 VALUES (?,?,?,?,?)',
-            (random.choice(part_name), img, 12, random.choice(decisions), random.choice(decisions))
+            (random.choice(part_name), img, random.randint(1,6), random.choice(decisions), random.choice(decisions))
         )
     print('Successfully inserted images into Images table.')
 
