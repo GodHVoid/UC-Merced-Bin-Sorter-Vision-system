@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .Popup-inner {
@@ -46,4 +47,18 @@
   margin: 70px;
   text-align: left;
   overflow: scroll;
+}
+
+.PartImage {
+  overflow: scroll;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+.part-img {
+  width: 100%;
+}
+
+.part-info {
+  margin: 10px;
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/Popup.css";
 
 function PartImage(props) {
 
@@ -20,11 +21,22 @@ function PartImage(props) {
 
   return(
     <div className="PartImage">
-      <img
-        src={img}
-        alt="image"
-        width={500}
-      />
+      <div>
+        <img
+          src={img}
+          alt="image"
+          className="part-img"
+        />
+      </div>
+
+      <div className="part-info">
+        <h1>Image id:</h1>
+        <h2>{props.img_id}</h2>
+        <h1>Part Type:</h1>
+        <h2>{props.type}</h2>
+        <h1>Damages:</h1>
+      </div>
+
     </div>
   );
 }
