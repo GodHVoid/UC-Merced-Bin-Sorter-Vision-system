@@ -10,7 +10,7 @@ model.iou = 0.45
 
 class VideoCamera(object):
     def __init__(self):
-        path = './sides08.mp4'
+        path = './imgs/sides08.mp4'
         self.video = cv2.VideoCapture(path)
         self.video.set(cv2.CAP_PROP_FPS, 60)
 
