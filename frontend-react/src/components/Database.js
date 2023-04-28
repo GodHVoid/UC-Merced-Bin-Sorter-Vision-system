@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import PartImage from "./PartImage";
 import "../styles/Database.css"
@@ -9,6 +9,7 @@ function Database() {
   const [searchWorker, setSearchWorker] = useState([]);
   const [buttonTrigger, setButtonTrigger] = useState("");
   const [ImgId, setImgId] = useState("");
+  const navigate = useNavigate();
 
   const req = 'http://localhost:8080';
 
@@ -37,9 +38,7 @@ function Database() {
   //search by worker
   const handleSearch = () => {
     if (searchWorker !== "") {
-      fetch("/api?search=${searchWorker}")
-        .then((response) => response.json())
-        .then((data) => setData(data));
+      navigate("./sorter-eval", {state: searchWorker});
     } else {
       fetchData();
     }
@@ -54,7 +53,7 @@ function Database() {
         <h2>Database</h2>
         <input
           type="text"
-          placeholder="Search by name"
+          placeholder="Search by ID"
           value={searchWorker}
           onChange={(e) => setSearchWorker(e.target.value)}
         />
