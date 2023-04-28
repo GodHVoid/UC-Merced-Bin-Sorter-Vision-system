@@ -58,7 +58,7 @@ function Database() {
           onChange={(e) => setSearchWorker(e.target.value)}
         />
         <button onClick={handleSearch}>Search</button>
-        <Link to={"/model-eval"}>
+        <Link to={"./model-eval"}>
           <button className="model-btn">Model</button>          
         </Link>
       </div>
