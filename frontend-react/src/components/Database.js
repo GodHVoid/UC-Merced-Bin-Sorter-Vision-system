@@ -9,6 +9,7 @@ function Database() {
   const [searchWorker, setSearchWorker] = useState([]);
   const [buttonTrigger, setButtonTrigger] = useState("");
   const [ImgId, setImgId] = useState("");
+  const [Type, setType] = useState("");
   const navigate = useNavigate();
 
   const req = 'http://localhost:8080';
@@ -59,7 +60,7 @@ function Database() {
         />
         <button onClick={handleSearch}>Search</button>
         <Link to={"./model-eval"}>
-          <button className="model-btn">Model</button>          
+          <button className="model-btn">Model</button>
         </Link>
       </div>
 
@@ -87,6 +88,7 @@ function Database() {
                   <button onClick={(event) => {
                     setButtonTrigger(true)
                     setImgId(i+1);
+                    setType(item[1]);
                     }}>
                     View
                   </button>
@@ -106,7 +108,7 @@ function Database() {
       </div>
 
       <Popup trigger={buttonTrigger} setTrigger={setButtonTrigger}>
-        <PartImage img_id={ImgId} />
+        <PartImage img_id={ImgId} type={Type} />
       </Popup>
       
     </Fragment>
