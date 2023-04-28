@@ -24,6 +24,7 @@ function EvalSorter(props) {
 
   const fetchData = () => {
     const id = parseInt(location.state);
+    console.log(id)
     fetch(req+"/api/data/sorter?id="+id, {
       method: "GET", 
       headers: {
@@ -42,9 +43,13 @@ function EvalSorter(props) {
 
   return (
     <div>
-      <Link to={"/data"}>
-        <button className="back-btn">Back</button> 
-      </Link>
+
+      <div className="toolbar">
+        <Link to={"/data"}>
+          <button className="back-btn">Back</button> 
+        </Link>
+        <h2>Sorter Evaluation</h2>
+      </div>
 
       <div className="eval-content">
 
