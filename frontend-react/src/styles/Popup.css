@@ -41,3 +41,9 @@
 .close-btn:hover {
   box-shadow: 0 9px 50px hsla(0, 100%, 50%, 0.25);
 }
+
+.Instructions {
+  margin: 70px;
+  text-align: left;
+  overflow: scroll;
+}
