@@ -11,7 +11,36 @@
 }
 
 .datatable thead {
-  background-color: rgba(128, 128, 128, 0.25);
+  background-color: rgba(200, 200, 200, 1);
+  position: sticky;
+  top: 0;
+}
+
+.datatable tr:nth-child(even) {
+  background-color: rgba(230, 230, 230, 1);
+}
+
+.datatable button {
+  display: inline-block;
+  color: #252537;
+  background: rgba(200, 200, 200, 1);
+
+  width: 100px;
+  height: 25px;
+
+  padding: 0 20px;
+  border-radius: 5px;
+  
+  outline: none;
+  border: none;
+
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s linear;
+  
+  margin: 5px auto;
+  letter-spacing: 0.05em;
+  font-size: 12pt;
 }
 
 .table-div {
