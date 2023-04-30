@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS Images;
 DROP TABLE IF EXISTS Overrides;
 DROP TABLE IF EXISTS Part_Conditions;
 DROP TABLE IF EXISTS DefectsList;
+DROP TABLE IF EXISTS Inventory;
 
 -- Creates Tables
 CREATE TABLE Users (
@@ -63,6 +64,13 @@ CREATE TABLE DefectsList (
     value       INTEGER PRIMARY KEY AUTOINCREMENT,
     defect_type STRING  NOT NULL
                         UNIQUE
+);
+
+CREATE TABLE Inventory (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    part_type STRING  UNIQUE
+                      NOT NULL,
+    count     INTEGER
 );
 
 ------------------------ Triggers --------------------------
