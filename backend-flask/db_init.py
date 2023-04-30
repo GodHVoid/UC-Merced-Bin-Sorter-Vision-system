@@ -26,7 +26,7 @@ def dummy_data(cur):
 
     part_name = ['metals', 'plains', 'tops', 'base']
     decisions = ['false', 'true']
-    for i in range(1,200):
+    for i in range(1,51):
         with open('./imgs/'+str((i%10))+'.png', 'rb') as f:
             img = f.read()
 
@@ -36,6 +36,13 @@ def dummy_data(cur):
             (random.choice(part_name), img, random.randint(1,6), random.choice(decisions), random.choice(decisions))
         )
     print('Successfully inserted images into Images table.')
+
+    inventory = [('Plains', 0), ('Tops', 0), ('Metals', 0), ('Base', 0)]
+    for i in inventory:
+        cur.execute(
+            'INSERT INTO Inventory (part_type, count) VALUES (?,?)',
+            (i)
+        )
 
     return 'Successfully pushed all dummy data.'
 
