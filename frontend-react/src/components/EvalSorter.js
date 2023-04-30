@@ -15,7 +15,7 @@ function EvalSorter(props) {
   const req = 'http://localhost:8080';
 
   const setDecision = (input) => {
-    return (input === "true") ? "Agree" : "Disagree";
+    return (input === "true") ? "Usable" : "Destroy";
   }
 
   useEffect(() => {
