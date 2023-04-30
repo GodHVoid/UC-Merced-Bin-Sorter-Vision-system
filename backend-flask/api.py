@@ -57,7 +57,8 @@ def get_data():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             data = cursor.execute(
-                'SELECT image_id, part_type, date, emp_id, sys_verdict, emp_verdict FROM Images'
+                'SELECT image_id, part_type, date, emp_id, sys_verdict, emp_verdict FROM Images \
+                    ORDER BY image_id DESC LIMIT 100'
             ).fetchall()
     
     return jsonify({'status': 'success',
@@ -100,7 +101,8 @@ def get_sorter_data():
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             data = cursor.execute(
-                'SELECT image_id, part_type, date, emp_id, sys_verdict, emp_verdict FROM Images WHERE emp_id=?',
+                'SELECT image_id, part_type, date, emp_id, sys_verdict, emp_verdict FROM Images WHERE emp_id=? \
+                    ORDER BY image_id DESC LIMIT 100',
                 (sorter_id)
             ).fetchall()
 
