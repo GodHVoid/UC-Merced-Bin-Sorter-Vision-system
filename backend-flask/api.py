@@ -1,6 +1,6 @@
 import config
 from auth import token_required, gen_token, check_password
-from camera import VideoCamera, gen
+from camera import VideoCamera, gen, get_detection_info
 from flask import Flask
 from flask import request, jsonify, Response
 from flask_cors import CORS, cross_origin
@@ -12,6 +12,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = config.secret_key
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+vc = VideoCamera()
 
 @app.route('/api/login', methods=['POST'])
 @cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
@@ -67,16 +69,35 @@ def get_data():
                     'message': 'successfully retrieved data entries.'})
 
 @app.route('/api/data', methods=['POST'])
-@token_required
+# @token_required
 def post_data():
     auth = request.get_json()
+    damages = auth['damages']
+
+    frame = vc.cur_frame
+    vc.button_pressed = True
 
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
-            cursor.execute(
-                'INSERT INTO Images part_type, image_blob, emp_id, sys_verdict, emp_verdict VALUES (?, ?, ?, ?, ?,)', 
-                (auth[''], auth[''], auth[''], auth[''], auth[''],)
+            id = cursor.execute(
+                'SELECT user_id FROM Users WHERE username=?',
+                (auth["emp-id"],)
+            ).fetchall()
+            c = cursor.execute(
+                'INSERT INTO Images (part_type, image_blob, emp_id, sys_verdict, emp_verdict) \
+                    VALUES (?, ?, ?, ?, ?)', 
+                (auth['part'], frame, id[0][0], auth['sys'], auth['emp'])
             )
+            cursor.execute(
+                'INSERT INTO Damages (p_image_id, Corner_damage, Edge_damage, Logo_repair, Cleat_damage) \
+                    VALUES (?,?,?,?,?)',
+                (c.lastrowid, 
+                 int(damages["Corner_damage"]), 
+                 int(damages["Edge_damage"]), 
+                 int(damages["Logo_repair"]), 
+                 int(damages["Cleat_damage"]))
+            )
+        conn.commit()
 
     return jsonify({'status': 'success',
                     'code': 200,
@@ -86,6 +107,7 @@ def post_data():
 @app.route('/api/data/image', methods=['GET'])
 def get_image_data():
     image_id = request.args.get('id')
+    print(image_id)
     with closing(sqlite3.connect(config.database)) as conn:
         with closing(conn.cursor()) as cursor:
             data = cursor.execute(
@@ -134,19 +156,11 @@ def get_sorter_data():
 @app.route('/api/detection', methods=['GET'])
 def get_detection_data():
 
-    test_data = {"part": "tops", 
-                 "img": None, 
-                 "id": 208, 
-                 "decision": "destroy", 
-                 "errors": {"Corner_damage": 2,
-                            "Edge_damage": 0, 
-                            "Logo_repair": 1,
-                            "Cleat_damage": 2,
-                            "Cleat_repair": 0}}
+    data = get_detection_info()
 
     return jsonify({'status': 'success',
                     'code': 200,
-                    'data': test_data,
+                    'data': data,
                     'message': f'successfully retrieved last 100 entries for {id}'})
 
 @app.route('/api/data/system', methods=['GET'])
@@ -159,7 +173,7 @@ def get_system_data():
 @cross_origin()
 # @token_required
 def livefeed():
-    return Response(gen(VideoCamera()), mimetype='multipart/x-mixed-replace;boundary=frame')
+    return Response(gen(vc), mimetype='multipart/x-mixed-replace;boundary=frame')
 
 
 if __name__ == '__main__':
