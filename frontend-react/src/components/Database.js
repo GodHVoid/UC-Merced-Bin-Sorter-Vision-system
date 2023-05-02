@@ -15,7 +15,7 @@ function Database() {
   const req = 'http://localhost:8080';
 
   const setDecision = (input) => {
-    return (input === "true") ? "Usable" : "Destroy";
+    return (input === 1) ? "Usable" : "Destroy";
   }
 
   useEffect(() => {
@@ -87,7 +87,7 @@ function Database() {
                 <th key={i+1}>
                   <button onClick={(event) => {
                     setButtonTrigger(true)
-                    setImgId(i+1);
+                    setImgId(item[0]);
                     setType(item[1]);
                     }}>
                     View

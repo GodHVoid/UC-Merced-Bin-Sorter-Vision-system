@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/LiveSort.css";
 import SortFeed from "./SortFeed";
 
 function LiveSort() {
@@ -7,14 +8,12 @@ function LiveSort() {
 
   return (
     <div className="LiveSort">
-      <span className="livefeed">
+      <div className="livefeed">
         <img 
           src={req+"/api/livefeed"}
           alt="Video"
-          height={500}
-          width={900}
         />
-      </span>
+      </div>
 
       <SortFeed />
     </div>
