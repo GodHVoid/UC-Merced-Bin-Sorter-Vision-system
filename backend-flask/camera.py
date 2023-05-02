@@ -17,16 +17,14 @@ import yaml
 import random
 
 #parts
-part=''
-p_id=0
+part='Tops'
 #damages
 corner = 0
 edge = 0
 logo=0
 cleat_d=0
-cleat_r=0
 #vertict
-decision = ''
+decision = True
 #model
 model = torch.hub.load( 'yolov5','custom', path='best.pt',source='local',force_reload=True,device= 'cpu' )
 model.conf = 0.4
@@ -41,29 +39,34 @@ deepsort =  DeepSort('./deep_sort/deep_sort/deep/checkpoint/ckpt.t7',
                         nms_max_overlap=cfg.DEEPSORT.NMS_MAX_OVERLAP, max_iou_distance=cfg.DEEPSORT.MAX_IOU_DISTANCE, 
                         max_age=cfg.DEEPSORT.MAX_AGE, n_init=cfg.DEEPSORT.N_INIT, nn_budget=cfg.DEEPSORT.NN_BUDGET, use_cuda=False)
 
+def get_detection_info():
+    damages = {'Corner_damage': corner,
+                'Edge_damage': edge,
+                'Logo_repair':logo, 
+                'Cleat_damage':cleat_d,
+                }
+        
+    info = {'part':part,
+            'damages': damages,
+            'decision': decision}
+        
+    return info
+
 class VideoCamera(object):
     def __init__(self):
-        path = './imgs/sides00.mp4'
+        path = './imgs/sides09.mp4'
+        self.cur_frame = None
         self.video = cv2.VideoCapture(path)
-        self.video.set(cv2.CAP_PROP_FPS, 120)
+        self.video.set(cv2.CAP_PROP_FPS, 10)
         self.id = 1
+        self.button_pressed = False
 
     def __del__(self):
         self.video.release()
 
-    def getInfo():
-        damages = {'Corner_damage': corner,
-                   'Edge_damage': edge,
-                   'Logo_repair':logo, 
-                   'Cleat_damage':cleat_d,
-                   'Cleat_repair':cleat_r}
-        
-        info = {'part':part,
-                'p_image_id':p_id,
-                'damages': damages,
-                'verdict': decision}
-        
-        return info
+    def set_frame(self, f):
+        self.cur_frame = None
+        self.cur_frame = f
 
     def get_frame(self):
         ret, frame = self.video.read()
@@ -74,6 +77,11 @@ class VideoCamera(object):
             results = model(frame, augment=True)
             annotator = Annotator(frame, line_width=2, pil=not ascii) 
             det = results.pred[0]
+
+            if self.button_pressed:
+                self.id +=1
+                self.button_pressed = False
+
             for i, det in enumerate((results.pred)):
                 if det is not None and len(det):   
                     xywhs = xyxy2xywh(det[:, 0:4])
@@ -90,9 +98,9 @@ class VideoCamera(object):
                             c = int(cls)  # integer class
                             label = f'{self.id} {names[c]} {conf:.2f}'
                             annotator.box_label(bboxes, label, color=colors(c, True))
+                    
                 else:
-                    self.id +=1
-
+                   self.id +=1
 
             frame = annotator.result()    
             frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
@@ -103,7 +111,6 @@ class VideoCamera(object):
             frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
             '''
 
-            results.print()
             ret, frame = cv2.imencode('.png', frame)
             return frame.tobytes()
         return None
@@ -112,6 +119,7 @@ def gen(camera):
     # Generates response to send to javascript.
     while True:
         frame = camera.get_frame()
+        camera.set_frame(frame)
         if frame is None:
             continue
         yield (b'--frame\r\n' b'Content-Type: image/png\r\n\r\n' + frame + b'\r\n\r\n')
