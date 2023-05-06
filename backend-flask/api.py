@@ -1,6 +1,6 @@
 import config
 from auth import token_required, gen_token, check_password
-from camera import VideoCamera, gen, get_detection_info
+from camera import VideoCamera, gen
 from flask import Flask
 from flask import request, jsonify, Response
 from flask_cors import CORS, cross_origin
@@ -156,7 +156,7 @@ def get_sorter_data():
 @app.route('/api/detection', methods=['GET'])
 def get_detection_data():
 
-    data = get_detection_info()
+    data = vc.get_detection_info()
 
     return jsonify({'status': 'success',
                     'code': 200,

@@ -20,6 +20,7 @@ function SortFeed() {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setPartName(data.data.part);
         setSystemVerdict(data.data.decision)
         setDisplaySystemVerdict((data.data.decision == 0) ? "Destroyed" : "Usable");
