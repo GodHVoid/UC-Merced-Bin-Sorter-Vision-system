@@ -6,7 +6,7 @@ from sqlite3 import Error
 import random
 
 def dummy_data(cur):
-    part_name = ['Plains', 'Metals', 'Tops', 'Bases']
+    part_name = ['Plain', 'Metal', 'Top', 'Base']
     decisions = ['false', 'true']
     for i in range(1,51):
         with open('./imgs/'+str((i%10))+'.png', 'rb') as f:
@@ -41,7 +41,7 @@ if __name__ == '__main__':
         users = [
             ('Tony', 'Doan', 'tdoan', '123Doan', 0),
             ('Renato', 'Millan', 'rmillan', '123Millan', 0),
-            ('Lucas', 'Ortiz-Gonzales', 'lortizgonzales', '123Ortizgonzales', 0),
+            ('Lucas', 'Ortiz', 'lortiz', '123Ortiz', 0),
             ('Rui', 'Pan', 'rpan', '123Pan', 0),
             ('Justus', 'Sasse', 'jsasse', '123Justus', 1),
             ('Bruce', 'Bates', 'bbates', '123Bruce', 1)
@@ -55,7 +55,7 @@ if __name__ == '__main__':
             )
         print('Successfully inserted users into Users table.')
 
-        inventory = [('Plains', 0), ('Tops', 0), ('Metals', 0), ('Bases', 0)]
+        inventory = [('Plain', 0), ('Top', 0), ('Metal', 0), ('Base', 0)]
         for i in inventory:
             cur.execute(
             'INSERT INTO Inventory (part_type, count) VALUES (?,?)',
