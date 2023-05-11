@@ -20,7 +20,6 @@ function SortFeed() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         setPartName(data.data.part);
         setSystemVerdict(data.data.decision)
         setDisplaySystemVerdict((data.data.decision == 0) ? "Destroyed" : "Usable");
@@ -32,7 +31,7 @@ function SortFeed() {
       .catch((error) => {
         console.error("Error fetching data from server:", error);
       });
-  }, []);
+  }, [partName, systemVerdict, systemErrors]);
 
   //sends userverdict
   const handleUserverdict = (event, userVerdict) => {
