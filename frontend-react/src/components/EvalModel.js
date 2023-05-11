@@ -4,15 +4,17 @@ import { Link } from "react-router-dom";
 
 function EvalModel() {
   const [confidenceLevel, setConfidenceLevel] = useState("");
-  const [verdictDifference, setVerdictDifference] = useState("");
+  const [inventory, setInventory] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const req = 'http://localhost:8080';
+
   useEffect(() => {
-    fetch("api")
+    fetch(req+"/api/data/system")
       .then((response) => response.json())
       .then((data) => {
         setConfidenceLevel(data.confidenceLevel);
-        setVerdictDifference(data.verdictDifference);
+        setInventory(data.data)
       });
   }, []);
 
@@ -37,8 +39,22 @@ function EvalModel() {
       </div>
 
       <div className="model-content">
-        <h2>System Confidence Level: {confidenceLevel}</h2>
-        <h2>System Verdict Difference: {verdictDifference}</h2>
+        {/* <div> */}
+          {/* <h2>System Accuracy: {confidenceLevel}</h2> */}
+        {/* </div> */}
+
+        <div>
+          <h2>Inventory</h2> <br /> <br/>
+        {inventory && (
+        <ul>
+        {Object.entries(inventory).map(([key, value]) => (
+          <li key={key}>
+            <h2>{value[1]}: {"\t"+value[2]}</h2>
+          </li>
+        ))}
+        </ul>
+        )}
+        </div>
       </div>
 
       <div className="file-upload">
