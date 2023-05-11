@@ -19,7 +19,7 @@ import random
 
 
 #model
-model = torch.hub.load( 'yolov5','custom', path='best_2.pt',source='local',force_reload=True,device= 'cpu' )
+model = torch.hub.load( 'yolov5','custom', path='best.pt',source='local',force_reload=True,device= 'cpu' )
 model.conf = 0.4
 model.iou = 0.45
 
@@ -44,7 +44,6 @@ class VideoCamera(object):
         self.corner = 0
         self.edge=0
         self.logo = 0
-        self.cleat_d =0
         self.decision = True
         self.button_pressed = False
         self.fps = 0
@@ -96,43 +95,40 @@ class VideoCamera(object):
         damages = {'Corner_damage': self.corner,
                     'Edge_damage':self. edge,
                     'Logo_repair':self.logo, 
-                    'Cleat_damage':self.cleat_d,
                     }
         
         info = {'part':self.part,
-            '   damages': damages,
+                'damages': damages,
                 'decision': self.decision}
         
         return info
     
     def restart(self):
-        self.part = ''
+        # self.part = ''
         self.corner = 0
         self.edge = 0 
         self.logo = 0
-        self.cleat_d = 0
-        self.decision = False
+       # self.decision = False
 
     def update(self,class_obj):
         if len(class_obj) > 1:
             self.decision = False
         else:
+            self.restart()
             self.decision = True
-        print('decision:', self.decision)
+        # print('decision:', self.decision)
         for i in range(len(class_obj)):
             if class_obj[i]>=4:
                 self.part = names[class_obj[i]]
-                print('part:', self.part)
+                # print('part:', self.part)
             if names[class_obj[i]]== 'Corner_damage':
                 self.corner =+ 1
             elif names[class_obj[i]] == 'Edge_damage':
                 self.edge =+ 1
             elif names[class_obj[i]] == 'Logo_repair':
                 self.logo =+ 1
-            elif names[class_obj[i]] == 'Cleat_damage':
-                self.cleat_d =+ 1
-        stuff = self.get_detection_info()
-        print(stuff)
+        # stuff = self.get_detection_info()
+        # print(stuff)
 
     def get_frame(self):
         ret, frame = self.video.read()
@@ -183,14 +179,14 @@ class VideoCamera(object):
                         stays = outputs[:, 7]
                         #update()
                         self.draw_boxes(frame, bbox_xyxy, [names[i] for i in clses], scores, identities)
-                    
             frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
             #cv2.imshow('test', frame)
             self.fps =+1
             ret, frame = cv2.imencode('.png', frame)
             return frame.tobytes()
-        return None
 
+        return None
+    
 def gen(camera):
     # Generates response to send to javascript.
     while True:
@@ -199,4 +195,4 @@ def gen(camera):
         if frame is None:
             continue
         yield (b'--frame\r\n' b'Content-Type: image/png\r\n\r\n' + frame + b'\r\n\r\n')
-        camera.restart()
+        #camera.restart()

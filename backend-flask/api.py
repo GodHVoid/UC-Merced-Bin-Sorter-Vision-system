@@ -89,13 +89,13 @@ def post_data():
                 (auth['part'], frame, id[0][0], auth['sys'], auth['emp'])
             )
             cursor.execute(
-                'INSERT INTO Damages (p_image_id, Corner_damage, Edge_damage, Logo_repair, Cleat_damage) \
-                    VALUES (?,?,?,?,?)',
+                'INSERT INTO Damages (p_image_id, Corner_damage, Edge_damage, Logo_repair) \
+                    VALUES (?,?,?,?)',
                 (c.lastrowid, 
                  int(damages["Corner_damage"]), 
                  int(damages["Edge_damage"]), 
-                 int(damages["Logo_repair"]), 
-                 int(damages["Cleat_damage"]))
+                 int(damages["Logo_repair"])
+                )
             )
         conn.commit()
 
@@ -157,17 +157,25 @@ def get_sorter_data():
 def get_detection_data():
 
     data = vc.get_detection_info()
-
+    # print('d', data)
     return jsonify({'status': 'success',
                     'code': 200,
                     'data': data,
                     'message': f'successfully retrieved last 100 entries for {id}'})
 
 @app.route('/api/data/system', methods=['GET'])
-@token_required
+# @token_required
 def get_system_data():
-    '''Get model's metrics. Ask Renato'''
-    pass
+    with closing(sqlite3.connect(config.database)) as conn:
+        with closing(conn.cursor()) as cursor:
+            data = cursor.execute(
+                'SELECT * FROM Inventory'
+            ).fetchall()
+
+    return jsonify({'status': 'success',
+                    'code': 200,
+                    'data': data,
+                    'message': f'successfully retrieved inventory'})
 
 @app.route('/api/livefeed', methods=['GET'])
 @cross_origin()
