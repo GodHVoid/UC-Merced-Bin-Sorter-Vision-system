@@ -1,0 +1,95 @@
+.datatable {
+  width: 100%;
+  padding: 5px;
+  border-collapse: collapse;
+}
+
+.datatable table, tr, th {
+  border: 1px solid black;
+  padding: 5px;
+  font-size: 16pt;
+}
+
+.datatable thead {
+  background-color: rgba(200, 200, 200, 1);
+  position: sticky;
+  top: 0;
+}
+
+.datatable tr:nth-child(even) {
+  background-color: rgba(230, 230, 230, 1);
+}
+
+.datatable button {
+  display: inline-block;
+  color: #252537;
+  background: rgba(200, 200, 200, 1);
+
+  width: 100px;
+  height: 25px;
+
+  padding: 0 20px;
+  border-radius: 5px;
+  
+  outline: none;
+  border: none;
+
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s linear;
+  
+  margin: 5px auto;
+  letter-spacing: 0.05em;
+  font-size: 12pt;
+}
+
+.table-div {
+  width: 100%;
+  height: 80vh;
+  overflow: scroll;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* border-bottom: 2px solid #252537; */
+  padding-bottom: 10px;
+}
+
+.toolbar h2 {
+  display: inline;
+  padding: 10px;
+}
+
+.toolbar button {
+  display: inline-block;
+  color: #252537;
+  background: rgba(200, 200, 200, 1);
+
+  width: 100px;
+  height: 25px;
+
+  padding: 0 20px;
+  border-radius: 5px;
+  
+  outline: none;
+  border: none;
+
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s linear;
+  
+  margin: 5px auto;
+  letter-spacing: 0.05em;
+  font-size: 12pt;
+}
+
+.toolbar button:hover {
+  box-shadow: 0 9px 50px hsla(0, 100%, 50%, 0.25);
+}
+
+.model-btn {
+  float: right;
+}

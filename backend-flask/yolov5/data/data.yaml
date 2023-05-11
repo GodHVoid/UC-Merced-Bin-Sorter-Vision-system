@@ -1,0 +1,17 @@
+names:
+- Base-pallet
+- Corner_damage
+- Edge_damage
+- Logo_repair
+- Plain
+- sides-metal
+nc: 6
+roboflow:
+  license: MIT
+  project: assembly-llgww
+  url: https://universe.roboflow.com/bin-detection/assembly-llgww/dataset/6
+  version: 6
+  workspace: bin-detection
+test: ../test/images
+train: Assembly--6/train/images
+val: Assembly--6/valid/images

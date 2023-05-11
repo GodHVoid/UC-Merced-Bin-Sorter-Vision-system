@@ -1,0 +1,44 @@
+.Footer {
+  background-color: rgba(200, 200, 200, 0.75);
+  box-shadow: 0 9px 50px hsla(0, 0%, 0%, 0.50);
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.title, .User {
+  margin: 0;
+}
+
+.Footer-btns {
+  display: inline-block;
+  color: #252537;
+
+  width: 280px;
+  height: 40px;
+
+  padding: 0 20px;
+  background: #fff;
+  border-radius: 5px;
+  
+  outline: none;
+  border: none;
+
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s linear;
+  
+  margin: 7% auto;
+  letter-spacing: 0.05em;
+  font-size: 16pt;
+}
+
+.Footer-btns:hover {
+  box-shadow: 0 9px 50px hsla(0, 100%, 50%, 0.25);
+}

@@ -1,0 +1,67 @@
+.LiveSort {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.livefeed img {
+  width: 95%;
+  border-radius: 25px;
+}
+
+.Sortfeed {
+  margin: 50px;
+}
+
+.systemVerdict {
+  background-color: rgba(200,200,200,0.75);
+  box-shadow: 0 9px 50px hsla(0, 0%, 0%, 0.50);
+  border-radius: 25px;
+  text-align: left;
+  height: 25vh;
+  padding: 10px;
+}
+
+.systemVerdict h2, ul{
+  display: inline;
+}
+
+.systemVerdict ul {
+  font-size: 18pt;
+  list-style: none;
+}
+
+.feedbackButton {
+  background-color: rgba(200,200,200,0.75);
+  box-shadow: 0 9px 50px hsla(0, 0%, 0%, 0.50);
+  border-radius: 25px;
+  text-align: center;
+  height: 50vh;
+  padding: 10px;
+}
+
+.feedbackButton h2 {
+  display: inline;
+}
+
+.feedbackButton button {
+  margin: 10px;
+  font-size: 36pt;
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.feedbackButton button:hover {
+  box-shadow: 0 9px 50px hsla(0, 100%, 50%, 0.25);
+}
+
+.g-btn {
+  background-color: rgba(0, 220, 20, 1);
+}
+
+.b-btn {
+  background-color: rgba(220, 0, 20, 1);
+}
